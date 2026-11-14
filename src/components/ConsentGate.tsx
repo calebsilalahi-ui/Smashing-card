@@ -51,54 +51,57 @@ export function ConsentGate() {
 
   const openDemo = () => router.push("/card?demo=true");
 
+  const tag = "mr-2 inline-block rounded-full border border-line px-2 py-0.5 align-middle text-xs font-medium text-fg-2";
+  const link = "text-fg underline decoration-fg/30 underline-offset-2 hover:decoration-fg";
+
   return (
-    <section aria-labelledby="sb-consent-title" className="rounded-3xl border border-cream/15 bg-espresso p-4 shadow-xl shadow-black/40">
-      <h2 id="sb-consent-title" className="font-display text-lg text-cream-soft">
+    <section aria-labelledby="sb-consent-title">
+      <h2 id="sb-consent-title" className="font-display text-xl text-fg">
         Join the VIP club
       </h2>
-      <p className="mt-1 text-xs text-cream/65">Persetujuan pelindungan data pribadi (UU PDP No. 27/2022)</p>
+      <p className="mt-1 text-sm text-fg-3">Persetujuan pelindungan data pribadi (UU PDP No. 27/2022)</p>
 
-      <div className="mt-4 space-y-3">
-        <label className="flex cursor-pointer items-start gap-3">
+      <div className="mt-4 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
+        <label className="flex cursor-pointer items-start gap-3.5 p-4">
           <input
             type="checkbox"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            className="mt-0.5 h-6 w-6 shrink-0 accent-flame"
+            className="mt-0.5 h-6 w-6 shrink-0 accent-fg"
             aria-required="true"
           />
-          <span className="text-sm leading-relaxed text-cream/90">
-            <span className="mr-1 rounded bg-flame/20 px-1.5 py-0.5 text-xs font-bold uppercase text-gold">Required</span>
+          <span className="text-sm leading-relaxed text-fg">
+            <span className={tag}>Required</span>
             I agree to the{" "}
-            <a href="/terms" className="font-semibold text-gold underline underline-offset-2">Terms &amp; Conditions</a> and{" "}
-            <a href="/privacy" className="font-semibold text-gold underline underline-offset-2">Privacy Policy</a>, including
+            <a href="/terms" className={link}>Terms &amp; Conditions</a> and{" "}
+            <a href="/privacy" className={link}>Privacy Policy</a>, including
             processing of my MokaPOS receipt photos and loyalty activity.
-            <span className="mt-1 block text-cream/65">
+            <span className="mt-1.5 block text-fg-2">
               Saya menyetujui{" "}
-              <a href="/terms" className="underline underline-offset-2">Syarat &amp; Ketentuan</a> dan{" "}
-              <a href="/privacy" className="underline underline-offset-2">Kebijakan Privasi</a>, termasuk pemrosesan foto
+              <a href="/terms" className="underline decoration-fg/30 underline-offset-2">Syarat &amp; Ketentuan</a> dan{" "}
+              <a href="/privacy" className="underline decoration-fg/30 underline-offset-2">Kebijakan Privasi</a>, termasuk pemrosesan foto
               struk MokaPOS dan aktivitas loyalitas saya.
             </span>
           </span>
         </label>
 
-        <label className="flex cursor-pointer items-start gap-3">
+        <label className="flex cursor-pointer items-start gap-3.5 p-4">
           <input
             type="checkbox"
             checked={push}
             onChange={(e) => setPush(e.target.checked)}
-            className="mt-0.5 h-6 w-6 shrink-0 accent-flame"
+            className="mt-0.5 h-6 w-6 shrink-0 accent-fg"
           />
-          <span className="text-sm leading-relaxed text-cream/90">
-            <span className="mr-1 rounded bg-cream/15 px-1 py-0.5 text-xs font-bold uppercase text-cream/80">Optional</span>
+          <span className="text-sm leading-relaxed text-fg">
+            <span className={tag}>Optional</span>
             Send me daily stamp reminder push notifications.
-            <span className="mt-1 block text-cream/65">Kirimi saya notifikasi pengingat stempel harian.</span>
+            <span className="mt-1.5 block text-fg-2">Kirimi saya notifikasi pengingat stempel harian.</span>
           </span>
         </label>
       </div>
 
       {!configured && (
-        <div role="note" className="mt-4 rounded-2xl border border-gold/30 bg-gold/10 p-3 text-xs leading-relaxed text-cream">
+        <div role="note" className="mt-4 rounded-2xl border border-line bg-surface p-4 text-sm leading-relaxed text-fg-2">
           Google login isn&apos;t configured on this deployment yet &mdash; explore the full experience in Demo Mode.
         </div>
       )}
@@ -107,7 +110,7 @@ export function ConsentGate() {
         type="button"
         onClick={onGoogle}
         disabled={!agreed || busy || !configured}
-        className="mt-4 flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-white px-4 text-sm font-bold text-neutral-800 shadow transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45"
+        className="mt-5 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-fg px-4 text-[15px] font-semibold text-ink transition-transform duration-150 ease-out active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40"
       >
         {busy ? <Loader2 size={20} className="animate-spin" aria-hidden /> : <GoogleG />}
         Continue with Google
@@ -117,19 +120,20 @@ export function ConsentGate() {
         <button
           type="button"
           onClick={openDemo}
-          className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-flame to-ember px-4 text-sm font-extrabold text-espresso-deep shadow-lg shadow-flame/30 active:scale-[0.98]"
+          className="mt-3 flex h-14 w-full items-center justify-center gap-2 rounded-full border border-line bg-surface-2 px-4 text-[15px] font-semibold text-fg transition-transform duration-150 ease-out active:scale-[0.97]"
         >
           <Zap size={18} aria-hidden /> Open Demo Mode
         </button>
       )}
 
       {error && (
-        <p role="alert" className="mt-3 rounded-xl bg-flame/15 p-2.5 text-xs text-cream-soft">
+        <p role="alert" className="mt-3 rounded-xl border border-line bg-surface p-3 text-sm text-fg">
+          <span className="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-flame align-middle" aria-hidden />
           {error}
         </p>
       )}
 
-      <p className="mt-3 text-center text-xs text-cream/70">Policy version {POLICY_VERSION}</p>
+      <p className="mt-4 text-center text-xs text-fg-3">Policy version {POLICY_VERSION}</p>
     </section>
   );
 }

@@ -30,28 +30,35 @@ const wibStamp = new Intl.DateTimeFormat("en-GB", {
 });
 
 function Flames({ expired }: { expired: boolean }) {
-  const c1 = expired ? "#9ca3af" : "#F54725";
-  const c2 = expired ? "#d1d5db" : "#FF7A00";
-  const c3 = expired ? "#e5e7eb" : "#F9A65A";
+  const outer = expired ? "#d1d5db" : "#F2EEE9";
+  const core = expired ? "#9ca3af" : "#F54725";
+  // One tall flame flanked by two smaller ones; each breathes on its own slow, offset cycle.
+  const tongues = [
+    { x: 70, h: 52, delay: 0.5, o: 0.55 },
+    { x: 100, h: 74, delay: 0, o: 0.95 },
+    { x: 130, h: 46, delay: 1.1, o: 0.5 },
+  ];
   return (
     <svg viewBox="0 0 200 90" className="h-20 w-full" aria-hidden preserveAspectRatio="xMidYMax meet">
-      <defs>
-        <linearGradient id="lt-flame" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0" stopColor={c1} />
-          <stop offset="0.6" stopColor={c2} />
-          <stop offset="1" stopColor={c3} />
-        </linearGradient>
-      </defs>
-      {[20, 55, 100, 145, 180].map((x, i) => (
-        <path
-          key={x}
-          className={expired ? "" : "lt-flame"}
-          style={{ animationDelay: `${i * 0.18}s`, transformOrigin: `${x}px 90px` }}
-          d={`M${x - 18} 90 C${x - 22} 55 ${x - 4} 45 ${x} 8 C${x + 6} 40 ${x + 24} 55 ${x + 18} 90 Z`}
-          fill="url(#lt-flame)"
-          opacity={0.92}
-        />
-      ))}
+      {tongues.map((t) => {
+        const w = t.h * 0.34;
+        const top = 90 - t.h;
+        const d = `M${t.x - w} 90 C${t.x - w * 1.25} ${90 - t.h * 0.45} ${t.x - w * 0.2} ${90 - t.h * 0.55} ${t.x} ${top} C${t.x + w * 0.2} ${90 - t.h * 0.55} ${t.x + w * 1.25} ${90 - t.h * 0.45} ${t.x + w} 90 Z`;
+        return (
+          <g
+            key={t.x}
+            className={expired ? "" : "lt-flame"}
+            style={{ animationDelay: `${t.delay}s`, transformOrigin: `${t.x}px 90px` }}
+            opacity={t.o}
+          >
+            <path d={d} fill={outer} />
+            <path
+              d={`M${t.x - w * 0.45} 90 C${t.x - w * 0.5} ${90 - t.h * 0.25} ${t.x} ${90 - t.h * 0.3} ${t.x} ${90 - t.h * 0.5} C${t.x} ${90 - t.h * 0.3} ${t.x + w * 0.5} ${90 - t.h * 0.25} ${t.x + w * 0.45} 90 Z`}
+              fill={core}
+            />
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -82,43 +89,39 @@ export function LiveCounterTicket({ fullName, memberCode, redeemedAt, onClose }:
       className={`fixed inset-0 z-[200] flex flex-col overflow-y-auto transition-colors duration-500 ${expired ? "bg-gray-600" : "bg-emerald-live"} text-white`}
     >
       <style>{`
-        @keyframes lt-flicker { 0%,100% { transform: scaleY(1) scaleX(1); } 25% { transform: scaleY(1.12) scaleX(.94); } 50% { transform: scaleY(.92) scaleX(1.06); } 75% { transform: scaleY(1.08) scaleX(.97); } }
-        @keyframes lt-march { from { background-position: 0 0, 10px 10px; } to { background-position: 80px 0, 90px 10px; } }
-        .lt-flame { animation: lt-flicker 0.9s ease-in-out infinite; }
-        .lt-march { animation: lt-march 2.4s linear infinite; }
+        @keyframes lt-breathe { 0%,100% { transform: scale(1, 1); } 30% { transform: scale(.96, 1.07); } 65% { transform: scale(1.03, .96); } }
+        .lt-flame { animation: lt-breathe 2.6s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
       `}</style>
 
-      <div className={`checker-strip lt-march shrink-0 ${expired ? "opacity-30" : ""}`} aria-hidden />
-
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-4 pb-6 pt-4 text-center">
-        <p className="font-display text-xs tracking-[0.25em] text-white">SMASHING BURGER · LIVE TICKET</p>
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] text-center">
+        <p className="font-mono text-xs tracking-[0.2em] text-white">SMASHING BURGER · LIVE TICKET</p>
 
         {expired ? (
-          <div className="mt-6" role="alert">
+          <div className="mt-8" role="alert">
             <p className="font-display text-3xl leading-tight">TICKET EXPIRED</p>
             <p className="mt-2 text-sm text-white">This proof is no longer valid.</p>
           </div>
         ) : (
           <>
-            <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-white">Valid for</p>
-            <p className="font-display text-7xl tabular-nums leading-none" aria-live="off">
+            <p className="mt-6 text-sm font-medium text-white">Valid for</p>
+            <p className="font-mono text-[5.5rem] font-medium tabular-nums leading-none tracking-tight" aria-live="off">
               {mm}:{ss}
             </p>
           </>
         )}
 
-        <div className="mt-3 w-full">
+        <div className="mt-4 w-full">
           <Flames expired={expired} />
         </div>
 
-        <div className="mt-1 w-full rounded-2xl bg-black/25 px-4 py-3">
-          <p className="text-xs uppercase tracking-widest text-white">Live time</p>
-          <p className="font-display text-3xl tabular-nums">{wibClock.format(new Date(now))} WIB</p>
+        <div className="mt-2 w-full rounded-2xl bg-black/25 px-4 py-3">
+          <p className="text-xs text-white">Live time</p>
+          <p className="font-mono text-3xl tabular-nums">{wibClock.format(new Date(now))} WIB</p>
         </div>
 
-        <div className="mt-3 w-full rounded-2xl bg-white/10 p-4">
+        <div className="mt-3 w-full rounded-2xl bg-black/25 p-4">
           <p className="font-display text-xl leading-tight">{fullName}</p>
-          <p className="text-sm text-white">#{memberCode}</p>
+          <p className="font-mono text-sm text-white">#{memberCode}</p>
           <p className="mt-1 text-xs text-white">Redeemed {redeemedLabel}</p>
           <div className="mt-3 flex items-center gap-3 rounded-xl bg-black/20 p-2 text-left">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -127,21 +130,19 @@ export function LiveCounterTicket({ fullName, memberCode, redeemedAt, onClose }:
           </div>
         </div>
 
-        <div className="mt-3 w-full rounded-2xl border-4 border-white bg-white px-3 py-3 text-espresso-deep">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Staff instruction</p>
-          <p className="font-display text-lg leading-tight">RING UP: VIP LOYALTY — FREE HELENA BURGER</p>
+        <div className="mt-3 w-full rounded-2xl bg-white px-4 py-3.5 text-left text-ink">
+          <p className="text-xs font-medium text-neutral-600">Staff instruction</p>
+          <p className="mt-0.5 font-display text-lg leading-tight">RING UP: VIP LOYALTY — FREE HELENA BURGER</p>
         </div>
 
         <button
           type="button"
           onClick={onClose}
-          className={`mt-5 w-full rounded-2xl px-4 py-3 text-sm font-bold transition active:scale-[0.98] ${expired ? "bg-white text-gray-700" : "border border-white/40 bg-black/20 text-white"}`}
+          className={`mt-5 h-12 w-full rounded-full px-4 text-[15px] font-semibold transition-transform duration-150 ease-out active:scale-[0.97] ${expired ? "bg-white text-gray-700" : "border border-white/40 bg-black/20 text-white"}`}
         >
           {expired ? "Close" : "Done"}
         </button>
       </div>
-
-      <div className={`checker-strip lt-march shrink-0 ${expired ? "opacity-30" : ""}`} aria-hidden />
     </div>
   );
 }

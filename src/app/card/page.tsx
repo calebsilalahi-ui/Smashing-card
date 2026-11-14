@@ -153,8 +153,8 @@ function CardDashboard() {
 
   if (!member || demo === null) {
     return (
-      <main className="grid min-h-dvh place-items-center bg-espresso text-cream">
-        <p className="font-display animate-pulse text-gold">Loading your card…</p>
+      <main className="grid min-h-dvh place-items-center bg-ink text-fg">
+        <p className="font-display animate-pulse text-fg-2">Loading your card…</p>
       </main>
     );
   }
@@ -165,31 +165,31 @@ function CardDashboard() {
   const code = member.memberCode.replace(/^#/, "");
 
   return (
-    <main className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col gap-5 overflow-x-hidden bg-espresso px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-4 text-cream">
+    <main className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col gap-6 overflow-x-hidden bg-ink px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] text-fg">
       {demo && (
-        <div className="-mx-4 -mt-4 bg-flame px-4 py-1 text-center font-display text-xs tracking-[0.25em] text-espresso-deep">
-          DEMO MODE
-        </div>
+        <p className="inline-flex items-center gap-2 self-center rounded-full border border-line bg-surface px-3 py-1 font-mono text-xs tracking-[0.18em] text-fg-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-flame" aria-hidden /> DEMO MODE
+        </p>
       )}
 
       <header className="flex items-center gap-3">
-        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-cream">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#E4D8CA]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/smashing-logo-mark.png" alt="Smashing Burger" className="h-8 w-8 object-contain" />
         </span>
         <div className="min-w-0 flex-1">
-          <h1 className="truncate font-display text-lg leading-tight text-cream">{member.fullName}</h1>
-          <p className="text-xs text-gold">#{code}</p>
+          <h1 className="truncate font-display text-lg leading-tight text-fg">{member.fullName}</h1>
+          <p className="font-mono text-sm text-fg-2">#{code}</p>
         </div>
         <button
-            type="button"
-            data-testid="presenter-pill"
-            onClick={() => (demo ? setDrawerOpen((o) => !o) : setSwitchOpen(true))}
-            aria-expanded={demo ? drawerOpen : undefined}
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-gold/50 bg-espresso-deep/95 px-3 text-sm font-bold text-gold transition active:scale-95"
-          >
-            <Zap size={16} aria-hidden /> <span className="max-[380px]:sr-only">Demo</span>
-          </button>
+          type="button"
+          data-testid="presenter-pill"
+          onClick={() => (demo ? setDrawerOpen((o) => !o) : setSwitchOpen(true))}
+          aria-expanded={demo ? drawerOpen : undefined}
+          className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full border border-line bg-surface-2 px-3.5 text-sm font-medium text-fg transition-transform duration-150 ease-out active:scale-95"
+        >
+          <Zap size={16} aria-hidden /> <span className="max-[380px]:sr-only">Demo</span>
+        </button>
         <SoundToggle />
       </header>
 
@@ -204,54 +204,62 @@ function CardDashboard() {
         onRedeemClick={unlocked ? () => setRedeemOpen(true) : undefined}
       />
 
-      <p className="text-center text-sm text-cream/80" aria-live="polite">
+      <p className="text-center text-[15px] text-fg-2" aria-live="polite">
         {unlocked ? (
-          <span className="font-semibold text-gold">Reward unlocked — {stamps}/{STAMPS_FOR_REWARD} stamps</span>
+          <span className="inline-flex items-center gap-2 font-medium text-fg">
+            <span className="h-1.5 w-1.5 rounded-full bg-flame" aria-hidden />
+            Reward unlocked — {stamps}/{STAMPS_FOR_REWARD} stamps
+          </span>
         ) : (
           <>
-            <span className="font-semibold text-gold">{stamps}/{STAMPS_FOR_REWARD}</span> stamps · {remaining} more for a free Helena Burger
+            <span className="font-mono font-medium text-fg">{stamps}/{STAMPS_FOR_REWARD}</span> stamps · {remaining} more for a free Helena Burger
           </>
         )}
       </p>
 
-      <button
-        type="button"
-        data-testid="scan-cta"
-        onClick={() => {
-          sfx.unlock();
-          sfx.click();
-          setSimReceipt(null);
-          setScannerOpen(true);
-        }}
-        className="w-full rounded-2xl bg-gradient-to-r from-flame to-ember inline-flex items-center justify-center gap-2 px-4 py-4 font-display text-base text-espresso-deep shadow-[0_10px_30px_rgba(245,71,37,.35)] transition active:scale-[0.98]"
-      >
-        <Camera size={22} strokeWidth={2.5} aria-hidden /> SCAN MOKAPOS RECEIPT
-      </button>
-
-      {unlocked && (
-        <motion.button
+      <div className="flex flex-col gap-3">
+        <button
           type="button"
-          data-testid="redeem-button"
+          data-testid="scan-cta"
           onClick={() => {
+            sfx.unlock();
             sfx.click();
-            setRedeemOpen(true);
+            setSimReceipt(null);
+            setScannerOpen(true);
           }}
-          animate={{ boxShadow: ["0 0 12px rgba(249,166,90,.4)", "0 0 34px rgba(255,122,0,.9)", "0 0 12px rgba(249,166,90,.4)"] }}
-          transition={{ duration: 1.8, repeat: Infinity }}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-gold to-ember px-4 py-4 font-display text-base text-espresso-deep transition active:scale-[0.98]"
+          className="inline-flex h-14 w-full items-center justify-center gap-2.5 rounded-full bg-fg px-4 font-display text-[15px] tracking-wide text-ink transition-transform duration-150 ease-out active:scale-[0.97]"
         >
-          <Gift size={20} aria-hidden /> REDEEM FREE HELENA BURGER
-        </motion.button>
-      )}
+          <Camera size={20} aria-hidden /> SCAN MOKAPOS RECEIPT
+        </button>
 
-      <PushToggle demo={demo} />
-      <AccountActions demo={demo} />
+        {unlocked && (
+          <motion.button
+            type="button"
+            data-testid="redeem-button"
+            onClick={() => {
+              sfx.click();
+              setRedeemOpen(true);
+            }}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+            whileTap={{ scale: 0.97 }}
+            className="flex h-14 w-full items-center justify-center gap-2.5 rounded-full bg-flame px-4 font-display text-[15px] text-ink"
+          >
+            <Gift size={20} aria-hidden /> Redeem free Helena Burger
+          </motion.button>
+        )}
+      </div>
 
-      <footer className="flex justify-center gap-4 text-xs text-cream/60">
-        <Link href="/privacy" className="inline-flex min-h-11 items-center px-2 underline underline-offset-2">Privacy</Link>
-        <Link href="/terms" className="inline-flex min-h-11 items-center px-2 underline underline-offset-2">Terms</Link>
+      <div className="flex flex-col gap-6">
+        <PushToggle demo={demo} />
+        <AccountActions demo={demo} />
+      </div>
+
+      <footer className="flex justify-center gap-4 text-sm text-fg-2">
+        <Link href="/privacy" className="inline-flex min-h-11 items-center px-2 hover:text-fg">Privacy</Link>
+        <Link href="/terms" className="inline-flex min-h-11 items-center px-2 hover:text-fg">Terms</Link>
       </footer>
-
 
       <PresenterDrawer
         open={drawerOpen}
@@ -289,12 +297,13 @@ function CardDashboard() {
           <motion.div
             key={toast}
             role="status"
-            initial={{ y: -30, opacity: 0 }}
+            initial={{ y: -16, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -30, opacity: 0 }}
-            className="fixed inset-x-4 top-4 z-[65] mx-auto flex max-w-md items-center gap-2 rounded-2xl bg-emerald-live px-4 py-3 text-sm font-semibold text-white shadow-xl"
+            exit={{ y: -16, opacity: 0 }}
+            transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+            className="fixed inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-[65] mx-auto flex w-fit max-w-[calc(100%-2rem)] items-center gap-2.5 rounded-full border border-line bg-surface-2 px-4 py-3 text-sm text-fg shadow-xl shadow-black/50"
           >
-            <CheckCircle2 size={20} className="shrink-0" aria-hidden />
+            <CheckCircle2 size={18} className="shrink-0 text-flame" aria-hidden />
             <span>{toast}</span>
           </motion.div>
         )}
@@ -308,15 +317,15 @@ function CardDashboard() {
             role="alertdialog"
             aria-modal="true"
             aria-labelledby="scan-error-msg"
-            className="w-full max-w-sm rounded-2xl border-2 border-red-500 bg-espresso-deep p-5 text-center"
+            className="w-full max-w-sm rounded-[20px] border border-line bg-surface p-6 text-center"
           >
-            <AlertTriangle className="mx-auto text-red-500" size={40} aria-hidden />
-            <p className="mt-2 font-display text-lg text-red-400">Receipt rejected</p>
-            <p id="scan-error-msg" className="mt-2 text-sm text-cream">{rejection}</p>
+            <AlertTriangle className="mx-auto text-flame" size={32} aria-hidden />
+            <p className="mt-3 font-display text-lg text-fg">Receipt rejected</p>
+            <p id="scan-error-msg" className="mt-2 text-sm leading-relaxed text-fg-2">{rejection}</p>
             <button
               type="button"
               onClick={() => setRejection(null)}
-              className="mt-4 w-full rounded-xl bg-red-600 px-4 py-3 text-sm font-bold text-white active:scale-[0.98]"
+              className="mt-5 h-12 w-full rounded-full bg-fg px-4 text-[15px] font-semibold text-ink transition-transform duration-150 ease-out active:scale-[0.97]"
             >
               OK
             </button>
@@ -327,24 +336,24 @@ function CardDashboard() {
       {/* Live -> demo switch explainer */}
       {switchOpen && (
         <div role="dialog" aria-modal="true" aria-labelledby="switch-title" className="fixed inset-0 z-[120] grid place-items-center bg-black/70 p-4">
-          <div className="w-full max-w-sm rounded-2xl border border-gold/40 bg-espresso-deep p-5">
+          <div className="w-full max-w-sm rounded-[20px] border border-line bg-surface p-6">
             <div className="flex items-start justify-between">
-              <h2 id="switch-title" className="flex items-center gap-2 font-display text-lg text-gold"><Zap size={18} aria-hidden /> Demo Mode</h2>
-              <button type="button" aria-label="Close" onClick={() => setSwitchOpen(false)} className="rounded-full p-1 text-cream/70">
+              <h2 id="switch-title" className="flex items-center gap-2 font-display text-lg text-fg"><Zap size={18} className="text-flame" aria-hidden /> Demo Mode</h2>
+              <button type="button" aria-label="Close" onClick={() => setSwitchOpen(false)} className="-mr-2 -mt-2 grid h-11 w-11 place-items-center rounded-full text-fg-2">
                 <X size={18} aria-hidden />
               </button>
             </div>
-            <p className="mt-2 text-sm text-cream/85">
+            <p className="mt-2 text-sm leading-relaxed text-fg-2">
               Demo Mode switches to a local sandbox with a fake card. It never touches your real stamps, receipts, or account.
             </p>
-            <div className="mt-4 flex gap-2">
-              <button type="button" onClick={() => setSwitchOpen(false)} className="w-full rounded-xl border border-cream/20 px-4 py-3 text-sm font-semibold">
+            <div className="mt-5 flex gap-2">
+              <button type="button" onClick={() => setSwitchOpen(false)} className="h-12 w-full rounded-full border border-line bg-surface-2 px-4 text-[15px] font-semibold text-fg">
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={() => window.location.assign("/card?demo=true")}
-                className="w-full rounded-xl bg-gradient-to-r from-flame to-ember px-4 py-3 text-sm font-bold text-espresso-deep"
+                className="h-12 w-full rounded-full bg-fg px-4 text-[15px] font-semibold text-ink"
               >
                 Open sandbox
               </button>
@@ -360,8 +369,8 @@ export default function CardPage() {
   return (
     <Suspense
       fallback={
-        <main className="grid min-h-dvh place-items-center bg-espresso text-cream">
-          <p className="font-display animate-pulse text-gold">Loading your card…</p>
+        <main className="grid min-h-dvh place-items-center bg-ink text-fg">
+          <p className="font-display animate-pulse text-fg-2">Loading your card…</p>
         </main>
       }
     >

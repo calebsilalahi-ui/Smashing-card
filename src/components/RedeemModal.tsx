@@ -115,7 +115,7 @@ export function RedeemModal({ open, onClose, demo, member, onRedeemed }: Props) 
 
   const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   const keyCls =
-    "h-14 rounded-2xl border border-cream/15 bg-espresso-soft/70 font-display text-2xl text-cream transition active:scale-95 active:bg-flame/40 disabled:opacity-40";
+    "h-16 w-16 justify-self-center rounded-full border border-line bg-surface-2 font-display text-2xl text-fg transition-[transform,background-color] duration-150 ease-out active:scale-95 active:bg-fg/15 disabled:opacity-40";
 
   return (
     <AnimatePresence>
@@ -124,25 +124,27 @@ export function RedeemModal({ open, onClose, demo, member, onRedeemed }: Props) 
         role="dialog"
         aria-modal="true"
         aria-label="Counter verification"
-        className="fixed inset-0 z-[90] flex flex-col overflow-y-auto bg-espresso-deep"
+        className="fixed inset-0 z-[90] flex flex-col overflow-y-auto bg-ink"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
       >
-        <div className="checker-strip shrink-0" aria-hidden />
-        <div className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center px-4 pb-6 pt-4 text-center">
-          <button type="button" onClick={onClose} aria-label="Close" className="grid h-11 w-11 self-end place-items-center rounded-full text-cream/80 hover:bg-cream/10">
+        <div className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(0.75rem,env(safe-area-inset-top))] text-center">
+          <button type="button" onClick={onClose} aria-label="Close" className="grid h-11 w-11 self-end place-items-center rounded-full text-fg-2 hover:bg-fg/10">
             <X size={20} aria-hidden />
           </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/helena-burger.png" alt="Helena Burger" className="h-28 w-28 rounded-2xl object-cover shadow-lg" />
-          <h2 className="mt-3 font-display text-xl text-gold">COUNTER VERIFICATION</h2>
-          <p className="mt-1 text-sm text-cream/80">Show this screen to the cashier</p>
-          <p className="text-xs text-cream/60">Cashier enters the 4-digit Staff PIN to release your free Helena Burger.</p>
+          <div className="rounded-[28px] border border-line bg-surface p-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/helena-burger.png" alt="Helena Burger" className="h-28 w-28 rounded-[20px] object-cover" />
+          </div>
+          <h2 className="mt-4 font-display text-xl text-fg">COUNTER VERIFICATION</h2>
+          <p className="mt-1 text-[15px] text-fg">Show this screen to the cashier</p>
+          <p className="mt-1 text-sm text-fg-2">Cashier enters the 4-digit Staff PIN to release your free Helena Burger.</p>
 
           <motion.div
             key={shake}
-            className="mt-5 flex gap-3"
+            className="mt-6 flex gap-4"
             animate={shake && !reduce ? { x: [0, -12, 12, -8, 8, 0] } : { x: 0 }}
             transition={{ duration: 0.4 }}
             role="status"
@@ -151,30 +153,30 @@ export function RedeemModal({ open, onClose, demo, member, onRedeemed }: Props) 
             {[0, 1, 2, 3].map((i) => (
               <span
                 key={i}
-                className={`h-4 w-4 rounded-full border-2 ${i < pin.length ? "border-flame bg-flame" : "border-cream/40"}`}
+                className={`h-3.5 w-3.5 rounded-full border transition-colors duration-150 ${i < pin.length ? "border-fg bg-fg" : "border-fg/40"}`}
               />
             ))}
           </motion.div>
 
-          <div className="mt-2 min-h-[2.5rem] text-sm" role="alert">
+          <div className="mt-3 min-h-[2.5rem] text-sm" role="alert">
             {locked && lockedUntil !== null ? (
-              <p className="font-semibold text-flame">
-                Too many wrong PINs. Try again in {fmtCountdown(lockedUntil - now)}
+              <p className="font-medium text-flame">
+                Too many wrong PINs. Try again in <span className="font-mono">{fmtCountdown(lockedUntil - now)}</span>
               </p>
             ) : (
-              error && <p className="font-semibold text-flame">{error}</p>
+              error && <p className="font-medium text-flame">{error}</p>
             )}
-            {busy && <p className="text-cream/70">Checking…</p>}
+            {busy && <p className="text-fg-2">Checking…</p>}
           </div>
 
-          <div className="mt-2 grid w-full grid-cols-3 gap-2.5">
+          <div className="mt-2 grid w-full grid-cols-3 gap-y-3">
             {keys.map((k) => (
               <button key={k} type="button" data-testid={`pin-key-${k}`} disabled={busy || locked} onClick={() => press(k)} className={keyCls}>
                 {k}
               </button>
             ))}
-            <button type="button" aria-label="Clear" disabled={busy || locked} onClick={() => setPin("")} className={`${keyCls} !text-sm`}>
-              CLEAR
+            <button type="button" aria-label="Clear" disabled={busy || locked} onClick={() => setPin("")} className={`${keyCls} !border-transparent !bg-transparent !font-sans !text-sm !font-medium !text-fg-2`}>
+              Clear
             </button>
             <button type="button" data-testid="pin-key-0" disabled={busy || locked} onClick={() => press("0")} className={keyCls}>
               0
@@ -184,13 +186,13 @@ export function RedeemModal({ open, onClose, demo, member, onRedeemed }: Props) 
               aria-label="Backspace"
               disabled={busy || locked}
               onClick={() => setPin((p) => p.slice(0, -1))}
-              className={`${keyCls} grid place-items-center`}
+              className={`${keyCls} grid place-items-center !border-transparent !bg-transparent !text-fg-2`}
             >
               <Delete size={22} aria-hidden />
             </button>
           </div>
 
-          {demo && <p className="mt-4 text-xs text-cream/70">Demo Staff PIN: {DEMO_STAFF_PIN}</p>}
+          {demo && <p className="mt-5 text-sm text-fg-2">Demo Staff PIN: <span className="font-mono text-fg">{DEMO_STAFF_PIN}</span></p>}
         </div>
       </motion.div>
     </AnimatePresence>

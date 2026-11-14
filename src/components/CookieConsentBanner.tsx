@@ -80,19 +80,19 @@ export function CookieConsentBanner() {
       aria-labelledby="sb-cookie-title"
       className="fixed inset-x-0 bottom-0 z-[60] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
     >
-      <div className="mx-auto max-w-md rounded-2xl border border-cream/15 bg-espresso-deep/95 p-4 shadow-2xl shadow-black/60 backdrop-blur">
+      <div className="mx-auto max-w-md rounded-[20px] border border-line bg-surface/95 p-4 shadow-2xl shadow-black/60 backdrop-blur">
         <div className="flex items-start gap-3">
-          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-flame/15 text-flame">
+          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-2 text-fg-2">
             <Cookie size={18} aria-hidden />
           </span>
           <div className="min-w-0">
-            <h2 id="sb-cookie-title" className="text-sm font-bold text-cream-soft">
+            <h2 id="sb-cookie-title" className="text-[15px] font-semibold text-fg">
               Cookies &amp; penyimpanan lokal
             </h2>
-            <p className="mt-1 text-xs leading-relaxed text-cream/75">
+            <p className="mt-1 text-sm leading-relaxed text-fg-2">
               Kami memakai cookie penting agar login aman, dan (jika Anda izinkan) penyimpanan preferensi. We use
               strictly necessary cookies for secure login, plus optional preference storage.{" "}
-              <a href="/privacy#cookies" className="font-semibold text-gold underline underline-offset-2">
+              <a href="/privacy#cookies" className="font-medium text-fg underline underline-offset-2">
                 Learn more
               </a>
             </p>
@@ -103,27 +103,27 @@ export function CookieConsentBanner() {
           type="button"
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
-          className="mt-3 flex min-h-11 w-full items-center justify-between rounded-lg px-1 text-xs font-semibold text-gold"
+          className="mt-2 flex min-h-11 w-full items-center justify-between rounded-lg px-1 text-sm font-medium text-fg"
         >
           Manage / Kelola
-          <ChevronDown size={16} aria-hidden className={`transition-transform ${expanded ? "rotate-180" : ""}`} />
+          <ChevronDown size={16} aria-hidden className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
         </button>
 
         {expanded && (
-          <div className="space-y-2 pb-2">
-            <div className="flex items-start justify-between gap-3 rounded-xl bg-espresso/70 p-3">
+          <div className="mb-2 divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface-2">
+            <div className="flex items-start justify-between gap-3 p-3">
               <div>
-                <p className="text-xs font-bold text-cream-soft">Strictly necessary / Sangat diperlukan</p>
-                <p className="mt-0.5 text-xs leading-snug text-cream/65">
+                <p className="text-sm font-medium text-fg">Strictly necessary / Sangat diperlukan</p>
+                <p className="mt-0.5 text-xs leading-snug text-fg-2">
                   Supabase Auth login session cookies and security. Always on.
                 </p>
               </div>
               <Switch checked disabled label="Strictly necessary (always on)" />
             </div>
-            <div className="flex items-start justify-between gap-3 rounded-xl bg-espresso/70 p-3">
+            <div className="flex items-start justify-between gap-3 p-3">
               <div>
-                <p className="text-xs font-bold text-cream-soft">Preferences / Preferensi</p>
-                <p className="mt-0.5 text-xs leading-snug text-cream/65">
+                <p className="text-sm font-medium text-fg">Preferences / Preferensi</p>
+                <p className="mt-0.5 text-xs leading-snug text-fg-2">
                   Sound on/off, your cookie choice and demo state, stored in localStorage.
                 </p>
               </div>
@@ -136,7 +136,7 @@ export function CookieConsentBanner() {
           <button
             type="button"
             onClick={() => save(false)}
-            className="min-h-11 rounded-full border border-cream/25 px-3 text-xs font-bold text-cream active:scale-[0.98]"
+            className="min-h-12 rounded-full border border-line bg-surface-2 px-3 text-sm font-semibold text-fg transition-transform duration-150 ease-out active:scale-[0.97]"
           >
             Necessary only
           </button>
@@ -144,7 +144,7 @@ export function CookieConsentBanner() {
             <button
               type="button"
               onClick={() => save(prefs)}
-              className="min-h-11 rounded-full border border-gold/60 px-3 text-xs font-bold text-gold active:scale-[0.98]"
+              className="min-h-12 rounded-full border border-line bg-surface-2 px-3 text-sm font-semibold text-fg transition-transform duration-150 ease-out active:scale-[0.97]"
             >
               Save choices
             </button>
@@ -154,7 +154,7 @@ export function CookieConsentBanner() {
           <button
             type="button"
             onClick={() => save(true)}
-            className={`min-h-11 rounded-full bg-flame px-3 text-xs font-extrabold text-espresso-deep active:scale-[0.98] ${
+            className={`min-h-12 rounded-full bg-fg px-3 text-sm font-semibold text-ink transition-transform duration-150 ease-out active:scale-[0.97] ${
               expanded ? "col-span-2" : ""
             }`}
           >
@@ -185,13 +185,13 @@ function Switch({
       aria-label={label}
       disabled={disabled}
       onClick={() => onChange?.(!checked)}
-      className={`relative mt-0.5 h-6 w-11 shrink-0 rounded-full transition-colors ${
-        checked ? "bg-flame" : "bg-cream/25"
+      className={`relative mt-0.5 h-6 w-11 shrink-0 rounded-full before:absolute before:-inset-2.5 before:content-[''] transition-colors ${
+        checked ? "bg-flame" : "bg-fg/20"
       } ${disabled ? "opacity-60" : ""}`}
     >
       <span
-        className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
-          checked ? "translate-x-5" : ""
+        className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-fg transition-transform ${
+          checked ? "translate-x-5 !bg-ink" : ""
         }`}
       />
     </button>

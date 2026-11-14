@@ -137,10 +137,10 @@ export function ReceiptScannerModal({ open, onClose, onCapture, busy, simulatedR
   const showScanLine = simulating || working || camState === "ready";
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Scan MokaPOS receipt" className="fixed inset-0 z-[70] flex flex-col bg-black text-cream">
+    <div role="dialog" aria-modal="true" aria-label="Scan MokaPOS receipt" className="fixed inset-0 z-[70] flex flex-col bg-black text-fg">
       <style>{`
-        @keyframes sb-scan { 0% { top: 2%; } 50% { top: 96%; } 100% { top: 2%; } }
-        .sb-scanline { animation: sb-scan 1.8s ease-in-out infinite; }
+        @keyframes sb-scan { 0% { top: 3%; } 50% { top: 97%; } 100% { top: 3%; } }
+        .sb-scanline { animation: sb-scan 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
       `}</style>
 
       {/* Camera layer */}
@@ -148,63 +148,63 @@ export function ReceiptScannerModal({ open, onClose, onCapture, busy, simulatedR
         {!simulating && (
           <video ref={videoRef} playsInline muted autoPlay className="h-full w-full object-cover" aria-hidden />
         )}
-        {simulating && <div className="h-full w-full bg-espresso-deep" />}
+        {simulating && <div className="h-full w-full bg-ink" />}
       </div>
 
       {/* Darkened mask with frame cut-out + frame */}
-      <div className="pointer-events-none absolute inset-0 grid place-items-center pb-28 pt-20">
+      <div className="pointer-events-none absolute inset-0 grid place-items-center pb-36 pt-36">
         <div
           ref={frameRef}
           className="relative w-[62%] max-w-[300px] rounded-md"
-          style={{ aspectRatio: `1 / ${FRAME_ASPECT}`, boxShadow: "0 0 0 100vmax rgba(0,0,0,.65)" }}
+          style={{ aspectRatio: `1 / ${FRAME_ASPECT}`, boxShadow: "0 0 0 100vmax rgba(0,0,0,.7)" }}
         >
           {simulatedReceipt && (
-            <div className="absolute inset-0 overflow-hidden rounded-md bg-espresso-soft">
+            <div className="absolute inset-0 overflow-hidden rounded-md bg-surface-2">
               <SampleMokaReceipt receipt={simulatedReceipt} />
             </div>
           )}
-          <div className="absolute inset-1 rounded border border-dashed border-gold/70" />
-          {(["left-0 top-0 border-l-4 border-t-4 rounded-tl-lg", "right-0 top-0 border-r-4 border-t-4 rounded-tr-lg", "left-0 bottom-0 border-l-4 border-b-4 rounded-bl-lg", "right-0 bottom-0 border-r-4 border-b-4 rounded-br-lg"] as const).map((c) => (
-            <span key={c} className={`absolute h-7 w-7 border-flame ${c}`} />
+          <div className="absolute inset-2 rounded-sm border border-fg/20" />
+          {(["left-0 top-0 border-l-2 border-t-2 rounded-tl-lg", "right-0 top-0 border-r-2 border-t-2 rounded-tr-lg", "left-0 bottom-0 border-l-2 border-b-2 rounded-bl-lg", "right-0 bottom-0 border-r-2 border-b-2 rounded-br-lg"] as const).map((c) => (
+            <span key={c} className={`absolute h-7 w-7 border-fg ${c}`} />
           ))}
           {showScanLine && (
-            <div className="sb-scanline absolute inset-x-1 h-0.5 bg-gradient-to-r from-transparent via-ember to-transparent shadow-[0_0_14px_3px_rgba(255,122,0,.8)]" />
+            <div className="sb-scanline absolute inset-x-2 h-px bg-flame shadow-[0_0_14px_2px_rgba(245,71,37,.55)]" />
           )}
         </div>
       </div>
 
       {/* Top bar */}
-      <div className="relative z-10 flex items-start justify-between gap-3 p-4">
-        <div className="max-w-[80%] rounded-xl bg-black/55 px-3 py-2 text-xs leading-snug backdrop-blur">
-          <p className="font-semibold">Fit the MokaPOS receipt inside the frame—keep the header, Receipt Number, and Total clear.</p>
-          <p className="mt-1 text-[10.5px] text-cream/75">
+      <div className="relative z-10 flex items-start justify-between gap-3 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))]">
+        <div className="max-w-[calc(100%-3.5rem)] rounded-2xl border border-line bg-black/50 px-4 py-3 backdrop-blur-md">
+          <p className="text-sm font-medium leading-snug text-fg">Fit the MokaPOS receipt inside the frame—keep the header, Receipt Number, and Total clear.</p>
+          <p className="mt-1.5 text-xs leading-snug text-fg-2">
             Min. Rp 50.000 per receipt · Maximum 10 stamps per receipt / Maksimal 10 stempel per struk · Receipts valid 7 days
           </p>
         </div>
-        <button type="button" onClick={onClose} aria-label="Close scanner" className="rounded-full bg-black/55 p-2.5 backdrop-blur">
+        <button type="button" onClick={onClose} aria-label="Close scanner" className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line bg-black/50 text-fg backdrop-blur-md transition-transform duration-150 active:scale-95">
           <X size={20} aria-hidden />
         </button>
       </div>
 
       {/* Denied state */}
       {!simulating && camState === "denied" && (
-        <div className="absolute inset-x-6 top-1/3 z-10 rounded-2xl border border-flame/40 bg-espresso-deep/95 p-4 text-center">
-          <Camera className="mx-auto text-gold" size={28} aria-hidden />
-          <p className="mt-2 text-sm font-semibold">Camera unavailable</p>
-          <p className="mt-1 text-xs text-cream/70">Allow camera access in your browser, or upload a photo of your MokaPOS receipt instead.</p>
+        <div className="absolute inset-x-6 top-1/2 z-10 -translate-y-1/2 rounded-[20px] border border-line bg-surface p-5 text-center">
+          <Camera className="mx-auto text-fg-2" size={28} aria-hidden />
+          <p className="mt-2 text-[15px] font-semibold text-fg">Camera unavailable</p>
+          <p className="mt-1 text-sm text-fg-2">Allow camera access in your browser, or upload a photo of your MokaPOS receipt instead.</p>
         </div>
       )}
 
       {/* Bottom controls */}
-      <div className="relative z-10 mt-auto flex items-center justify-center gap-8 bg-gradient-to-t from-black/80 to-transparent px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6">
+      <div className="relative z-10 mt-auto grid grid-cols-[1fr_auto_1fr] items-center px-6 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-4">
         <input ref={fileRef} type="file" accept="image/*" capture="environment" className="sr-only" onChange={onFile} data-testid="receipt-file-input" />
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
           disabled={working || simulating}
-          className="flex flex-col items-center gap-1 text-xs font-semibold text-cream disabled:opacity-40"
+          className="flex min-h-11 flex-col items-center gap-1.5 justify-self-start text-sm font-medium text-fg disabled:opacity-40"
         >
-          <span className="grid h-12 w-12 place-items-center rounded-full border border-cream/30 bg-black/50">
+          <span className="grid h-12 w-12 place-items-center rounded-full border border-line bg-black/50 backdrop-blur-md">
             <ImagePlus size={20} aria-hidden />
           </span>
           Upload photo
@@ -214,19 +214,21 @@ export function ReceiptScannerModal({ open, onClose, onCapture, busy, simulatedR
           onClick={shutter}
           disabled={working || simulating || camState !== "ready"}
           aria-label="Capture receipt"
-          className="grid h-[72px] w-[72px] place-items-center rounded-full border-4 border-white bg-flame/90 transition active:scale-90 disabled:opacity-40"
+          className="grid h-20 w-20 place-items-center rounded-full border-2 border-fg p-1.5 transition-transform duration-150 ease-out active:scale-90 disabled:opacity-40"
         >
-          <Camera size={28} className="text-white" aria-hidden />
+          <span className="grid h-full w-full place-items-center rounded-full bg-fg text-ink">
+            <Camera size={26} aria-hidden />
+          </span>
         </button>
-        <span className="w-12" aria-hidden />
+        <span aria-hidden />
       </div>
 
       {/* Busy overlay */}
       {working && (
-        <div className="absolute inset-0 z-20 grid place-items-center bg-black/70" role="status">
+        <div className="absolute inset-0 z-20 grid place-items-center bg-black/75" role="status">
           <div className="text-center">
-            <Loader2 className="mx-auto animate-spin text-ember" size={36} aria-hidden />
-            <p className="mt-3 font-display text-lg text-gold">Verifying receipt with AI…</p>
+            <Loader2 className="mx-auto animate-spin text-fg" size={32} aria-hidden />
+            <p className="mt-3 font-display text-lg text-fg">Verifying receipt with AI…</p>
           </div>
         </div>
       )}

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const mail = BRAND.supportEmail;
 const Mail = () => (
-  <a className="text-gold underline underline-offset-4" href={`mailto:${mail}`}>
+  <a className="text-fg underline underline-offset-4" href={`mailto:${mail}`}>
     {mail}
   </a>
 );
@@ -218,7 +218,7 @@ const sections: LegalSectionData[] = [
           <P>
             Karena itu, nomor struk, tanggal, dan total disimpan dan dibandingkan dengan klaim
             lain untuk mencegah penyalahgunaan. Rincian lengkap ada di{" "}
-            <a className="text-gold underline underline-offset-4" href="/terms">
+            <a className="text-fg underline underline-offset-4" href="/terms">
               Syarat &amp; Ketentuan
             </a>
             .
@@ -237,7 +237,7 @@ const sections: LegalSectionData[] = [
           <P>
             For this reason, receipt numbers, dates, and totals are stored and compared against
             other claims to prevent abuse. Full details are in the{" "}
-            <a className="text-gold underline underline-offset-4" href="/terms">
+            <a className="text-fg underline underline-offset-4" href="/terms">
               Terms &amp; Conditions
             </a>
             .

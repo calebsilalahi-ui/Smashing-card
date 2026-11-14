@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const mail = BRAND.supportEmail;
 const Mail = () => (
-  <a className="text-gold underline underline-offset-4" href={`mailto:${mail}`}>
+  <a className="text-fg underline underline-offset-4" href={`mailto:${mail}`}>
     {mail}
   </a>
 );
@@ -26,7 +26,7 @@ const sections: LegalSectionData[] = [
           memungkinkan member mengumpulkan stempel dari pembelian di outlet Smashing Burger dan
           menukarnya dengan hadiah. Dengan masuk dan menggunakan aplikasi, Anda menyetujui
           syarat ini dan{" "}
-          <a className="text-gold underline underline-offset-4" href="/privacy">
+          <a className="text-fg underline underline-offset-4" href="/privacy">
             Kebijakan Privasi
           </a>
           .
@@ -37,7 +37,7 @@ const sections: LegalSectionData[] = [
           The Smashing Burger VIP Card is a digital loyalty programme (web app / PWA) that lets
           members collect stamps from purchases at Smashing Burger outlets and exchange them
           for a reward. By signing in and using the app, you accept these terms and the{" "}
-          <a className="text-gold underline underline-offset-4" href="/privacy">
+          <a className="text-fg underline underline-offset-4" href="/privacy">
             Privacy Policy
           </a>
           .
@@ -222,7 +222,7 @@ const sections: LegalSectionData[] = [
       id: (
         <P>
           Pemrosesan data pribadi diatur dalam{" "}
-          <a className="text-gold underline underline-offset-4" href="/privacy">
+          <a className="text-fg underline underline-offset-4" href="/privacy">
             Kebijakan Privasi
           </a>
           , termasuk hak Anda untuk mengunduh data dan menghapus akun dengan sekali ketuk.
@@ -233,7 +233,7 @@ const sections: LegalSectionData[] = [
       en: (
         <P>
           Processing of personal data is governed by the{" "}
-          <a className="text-gold underline underline-offset-4" href="/privacy">
+          <a className="text-fg underline underline-offset-4" href="/privacy">
             Privacy Policy
           </a>
           , including your right to download your data and delete your account in one tap.

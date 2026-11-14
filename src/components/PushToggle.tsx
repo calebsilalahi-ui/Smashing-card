@@ -133,17 +133,17 @@ export function PushToggle({ demo = false }: { demo?: boolean }) {
 
   return (
     <div
-      className={`rounded-2xl border bg-espresso p-4 ${
-        highlight ? "animate-pulse border-flame ring-2 ring-flame/60" : "border-cream/15"
+      className={`rounded-2xl border bg-surface p-4 ${
+        highlight ? "animate-pulse border-flame" : "border-line"
       }`}
     >
       <div className="flex items-center gap-3">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-flame/15 text-flame">
+        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-2 ${on ? "text-flame" : "text-fg-2"}`}>
           {on ? <Bell size={20} aria-hidden /> : <BellOff size={20} aria-hidden />}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-cream-soft">Daily stamp reminders</p>
-          <p className="text-xs text-cream/65">
+          <p className="text-[15px] font-medium text-fg">Daily stamp reminders</p>
+          <p className="text-sm text-fg-3">
             {highlight ? "You opted in — tap to enable." : "Pengingat stempel harian"}
           </p>
         </div>
@@ -154,50 +154,50 @@ export function PushToggle({ demo = false }: { demo?: boolean }) {
           aria-label="Daily stamp reminders"
           onClick={toggle}
           disabled={busy || unsupported}
-          className={`relative h-8 w-14 shrink-0 rounded-full before:absolute before:-inset-x-1 before:-inset-y-2 before:content-[""] transition-colors disabled:opacity-50 ${
-            on ? "bg-flame" : "bg-cream/25"
+          className={`relative h-8 w-14 shrink-0 rounded-full before:absolute before:-inset-x-1 before:-inset-y-2 before:content-[''] transition-colors duration-200 disabled:opacity-50 ${
+            on ? "bg-flame" : "bg-fg/20"
           }`}
         >
           <span
-            className={`absolute top-1 left-1 h-6 w-6 rounded-full bg-white shadow transition-transform ${
-              on ? "translate-x-6" : ""
+            className={`absolute top-1 left-1 h-6 w-6 rounded-full bg-fg shadow transition-transform duration-200 ease-out ${
+              on ? "translate-x-6 !bg-ink" : ""
             }`}
           />
         </button>
       </div>
 
       {demo && (
-        <p className="mt-3 text-xs text-gold">
+        <p className="mt-3 text-sm text-fg-2">
           Demo: push is simulated.{" "}
           {on && (
-            <button type="button" onClick={sendSample} className="font-bold underline underline-offset-2">
+            <button type="button" onClick={sendSample} className="font-medium text-fg underline underline-offset-2">
               Send a sample notification
             </button>
           )}
         </p>
       )}
-      {note && <p className="mt-2 text-xs text-cream/70">{note}</p>}
-      {unsupported && <p className="mt-3 text-xs text-cream/65">This browser doesn&apos;t support push notifications.</p>}
+      {note && <p className="mt-2 text-sm text-fg-2">{note}</p>}
+      {unsupported && <p className="mt-3 text-sm text-fg-2">This browser doesn&apos;t support push notifications.</p>}
 
       {needsInstall && !demo && (
-        <div className="mt-3 rounded-xl bg-espresso-deep p-3 text-xs leading-relaxed text-cream/85">
-          <p className="font-bold text-cream-soft">Add to Home Screen to enable push on iPhone</p>
+        <div className="mt-3 rounded-xl bg-surface-2 p-3 text-sm leading-relaxed text-fg-2">
+          <p className="font-medium text-fg">Add to Home Screen to enable push on iPhone</p>
           <ol className="mt-2 space-y-1.5">
             <li className="flex items-center gap-2">
-              <Share size={16} className="shrink-0 text-gold" aria-hidden /> Tap the Share button in Safari.
+              <Share size={16} className="shrink-0 text-fg" aria-hidden /> Tap the Share button in Safari.
             </li>
             <li className="flex items-center gap-2">
-              <PlusSquare size={16} className="shrink-0 text-gold" aria-hidden /> Choose &ldquo;Add to Home Screen&rdquo;.
+              <PlusSquare size={16} className="shrink-0 text-fg" aria-hidden /> Choose &ldquo;Add to Home Screen&rdquo;.
             </li>
             <li className="flex items-center gap-2">
-              <Bell size={16} className="shrink-0 text-gold" aria-hidden /> Open Smashing VIP from the Home Screen, then enable reminders.
+              <Bell size={16} className="shrink-0 text-fg" aria-hidden /> Open Smashing VIP from the Home Screen, then enable reminders.
             </li>
           </ol>
         </div>
       )}
 
       {error && (
-        <p role="alert" className="mt-3 rounded-xl bg-flame/15 p-2.5 text-xs text-cream-soft">
+        <p role="alert" className="mt-3 rounded-xl border border-line bg-surface-2 p-3 text-sm text-fg">
           {error}
         </p>
       )}
