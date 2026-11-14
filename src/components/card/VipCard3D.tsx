@@ -302,7 +302,6 @@ function Back({
   const unlocked = stamps >= STAMPS_FOR_REWARD;
   const shown = Math.min(stamps, STAMPS_FOR_REWARD);
   const remaining = Math.max(0, STAMPS_FOR_REWARD - stamps);
-  const rollover = Math.max(0, stamps - STAMPS_FOR_REWARD);
 
   const copy = unlocked ? (
     <>
@@ -386,21 +385,6 @@ function Back({
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
           <div style={{ ...CAPS, color: "var(--color-fg-2)" }}>STAMP CARD</div>
           <div style={{ display: "flex", alignItems: "center", gap: "2cqw" }}>
-            {rollover > 0 && (
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: SMALL,
-                  color: "var(--color-flame)",
-                  border: "1px solid var(--color-flame)",
-                  borderRadius: 99,
-                  padding: "0.4cqw 2cqw",
-                }}
-              >
-                +{rollover}
-                <span className="sr-only"> rollover stamps</span>
-              </span>
-            )}
             <div
               style={{
                 fontFamily: "var(--font-mono)",
@@ -421,9 +405,11 @@ function Back({
         <div
           role="group"
           aria-label={`${shown} of ${STAMPS_FOR_REWARD} stamps`}
-          style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "3.4cqw 3cqw" }}
+          style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-evenly", margin: "3cqw 0" }}
         >
-          {Array.from({ length: STAMPS_FOR_REWARD }, (_, i) => {
+          {SLOT_ROWS.map((row) => (
+          <div key={row[0]} style={{ display: "flex", justifyContent: "center", gap: "7cqw" }}>
+          {row.map((i) => {
             const earned = i < shown;
             return (
               <div
@@ -431,6 +417,7 @@ function Back({
                 data-slot={i}
                 style={{
                   position: "relative",
+                  width: "21cqw",
                   aspectRatio: "1 / 1",
                   borderRadius: "50%",
                   display: "flex",
@@ -459,6 +446,8 @@ function Back({
               </div>
             );
           })}
+          </div>
+          ))}
         </div>
 
         {/* reward strip */}
@@ -539,6 +528,9 @@ function Back({
     </div>
   );
 }
+
+/** Staggered 3–2–3–2 layout so the 10 slots fill the back of the card. */
+const SLOT_ROWS: number[][] = [[0, 1, 2], [3, 4], [5, 6, 7], [8, 9]];
 
 export function VipCard3D({
   fullName,

@@ -25,7 +25,7 @@ create table if not exists public.profiles (
   email                text,
   full_name            text not null default 'Smashing VIP',
   member_code          text not null unique,
-  stamps               integer not null default 0 check (stamps >= 0),
+  stamps               integer not null default 0 check (stamps between 0 and 10), -- card holds max 10
   push_opt_in          boolean not null default false,
   failed_pin_attempts  integer not null default 0 check (failed_pin_attempts >= 0),
   pin_locked_until     timestamptz,
@@ -208,6 +208,8 @@ grant select, insert, delete on public.push_subscriptions to authenticated;
 --   * Locks the member's profile row (FOR UPDATE) so concurrent scans serialise.
 --   * INSERT ... ON CONFLICT (receipt_number) DO NOTHING enforces one claim per receipt
 --     globally, race-free, even across different members.
+--   * Card cap: a member holds at most 10 stamps. At 10 the claim is rejected ('card_full') without
+--     consuming the receipt; otherwise awards least(earned, 10 - current) and reports stamps_dropped.
 --   * Re-validates the business rules server-side (defence in depth):
 --     min Rp 50.000, 1..10 stamps (max 10 per receipt), stamps == min(floor(total/50000), 10),
 --     receipt dated within 7 days (WIB) and not in the future.
@@ -232,6 +234,7 @@ declare
   v_expected       integer;
   v_inserted_id    uuid;
   v_new_stamps     integer;
+  v_awarded        integer;
 begin
   if p_user_id is null or length(v_receipt) < 4 or p_receipt_date is null or p_total_idr is null then
     return jsonb_build_object('ok', false, 'code', 'bad_request', 'message', 'Missing receipt data.');
@@ -268,8 +271,16 @@ begin
     return jsonb_build_object('ok', false, 'code', 'unauthorized', 'message', 'Member profile not found.');
   end if;
 
+  -- Card full: reject WITHOUT consuming the receipt, so it can be scanned after redeeming.
+  if v_profile.stamps >= 10 then
+    return jsonb_build_object('ok', false, 'code', 'card_full',
+      'message', 'Your card is full (10/10). Redeem your free Helena Burger first.',
+      'receipt_number', v_receipt);
+  end if;
+  v_awarded := least(p_stamps_earned, 10 - v_profile.stamps);
+
   insert into public.claimed_receipts (user_id, receipt_number, receipt_date, total_idr, stamps_awarded)
-  values (p_user_id, v_receipt, p_receipt_date, p_total_idr, p_stamps_earned)
+  values (p_user_id, v_receipt, p_receipt_date, p_total_idr, v_awarded)
   on conflict (receipt_number) do nothing
   returning id into v_inserted_id;
 
@@ -279,7 +290,7 @@ begin
       'receipt_number', v_receipt);
   end if;
 
-  v_new_stamps := v_profile.stamps + p_stamps_earned;
+  v_new_stamps := v_profile.stamps + v_awarded;
   update public.profiles set stamps = v_new_stamps where id = p_user_id;
 
   return jsonb_build_object(
@@ -288,7 +299,8 @@ begin
     'receipt_number', v_receipt,
     'previous_stamps', v_profile.stamps,
     'stamps', v_new_stamps,
-    'stamps_earned', p_stamps_earned
+    'stamps_earned', v_awarded,
+    'stamps_dropped', p_stamps_earned - v_awarded
   );
 end;
 $$;
@@ -298,7 +310,7 @@ $$;
 --   * Locks the profile row; enforces 5 wrong attempts → 15-minute lockout.
 --   * Never RAISEs on a wrong PIN (a raise would roll back the attempt counter);
 --     always returns jsonb so the counter persists.
---   * Deducts exactly 10 stamps, preserving rollover stamps above 10.
+--   * Deducts exactly 10 stamps (the card holds max 10, so it returns to 0/10).
 -- Returns jsonb: { ok, code, message, attempts_remaining, locked_until, redemption_id,
 --                  redeemed_at, stamps, member_code, full_name, reward_name }
 -- =====================================================================================

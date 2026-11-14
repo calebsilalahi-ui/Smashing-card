@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getAuthedUser } from "@/lib/supabase/server";
 import { getAdminSupabase } from "@/lib/supabase/admin";
 import { extractMokaReceipt, VisionUnavailableError } from "@/lib/vision";
-import { duplicateMessage, validateReceipt } from "@/lib/moka";
+import { CARD_FULL_MESSAGE, duplicateMessage, MAX_CARD_STAMPS, validateReceipt } from "@/lib/moka";
 import { rateLimit } from "@/lib/member";
 import type { ScanErrorCode, ScanFailure, ScanResponse } from "@/lib/types";
 
@@ -46,6 +46,12 @@ export async function POST(req: Request) {
     return fail(413, "payload_too_large", "Photo is too large. Please retake it.");
   }
 
+  // Card full (10/10): block before spending a Vision AI call. The receipt is not consumed.
+  const { data: profile } = await admin.from("profiles").select("stamps").eq("id", authed.user.id).maybeSingle();
+  if (profile && (profile as { stamps: number }).stamps >= MAX_CARD_STAMPS) {
+    return fail(409, "card_full", CARD_FULL_MESSAGE);
+  }
+
   let raw;
   try {
     raw = await extractMokaReceipt(image);
@@ -82,11 +88,13 @@ export async function POST(req: Request) {
     previous_stamps?: number;
     stamps?: number;
     stamps_earned?: number;
+    stamps_dropped?: number;
   };
   if (!r.ok) {
     const code = (r.code as ScanErrorCode) || "server_error";
-    const message = code === "duplicate" ? duplicateMessage(valid.receiptNumber) : r.message || "Receipt rejected.";
-    return fail(code === "duplicate" ? 409 : 422, code, message, valid.receiptNumber);
+    const message =
+      code === "duplicate" ? duplicateMessage(valid.receiptNumber) : code === "card_full" ? CARD_FULL_MESSAGE : r.message || "Receipt rejected.";
+    return fail(code === "duplicate" || code === "card_full" ? 409 : 422, code, message, valid.receiptNumber);
   }
 
   const body: ScanResponse = {
@@ -95,6 +103,7 @@ export async function POST(req: Request) {
     receiptDate: valid.receiptDate,
     totalIdr: valid.totalIdr,
     stampsEarned: r.stamps_earned ?? valid.stampsEarned,
+    stampsDropped: r.stamps_dropped ?? 0,
     previousStamps: r.previous_stamps ?? 0,
     stamps: r.stamps ?? 0,
   };

@@ -10,6 +10,16 @@ export const RECEIPT_MAX_AGE_DAYS = 7;
 export const MIN_CONFIDENCE = 0.75;
 /** Business rule: one receipt can never award more than 10 stamps (enforced again in Postgres). */
 export const MAX_STAMPS_PER_RECEIPT = 10;
+/** Business rule: the card holds at most 10 stamps. Scanning is blocked until the reward is redeemed. */
+export const MAX_CARD_STAMPS = 10;
+
+export const CARD_FULL_MESSAGE =
+  "Your card is full (10/10). Redeem your free Helena Burger first, then keep this receipt to scan afterwards.";
+
+/** Stamps a receipt can actually add to a card currently holding `current` stamps (never past 10). */
+export function stampsAwardable(current: number, earned: number): number {
+  return Math.max(0, Math.min(earned, MAX_CARD_STAMPS - Math.max(0, current)));
+}
 
 const MONTHS: Record<string, number> = {
   jan: 1, januari: 1, january: 1,

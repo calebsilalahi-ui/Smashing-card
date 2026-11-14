@@ -6,7 +6,7 @@ export interface Member {
   fullName: string;
   /** Display code, e.g. "SB-0042" (render with a leading "#"). */
   memberCode: string;
-  /** Uncapped stamp balance. 10+ means the Helena Burger reward is unlocked; extra stamps roll over. */
+  /** Stamp balance, 0–10. 10 = card full: Helena Burger unlocked and scanning blocked until redeemed. */
   stamps: number;
   /** ISO timestamp while the member is locked out of PIN entry, otherwise null. */
   pinLockedUntil: string | null;
@@ -33,6 +33,7 @@ export type ScanErrorCode =
   | "future_date"
   | "below_minimum"
   | "duplicate"
+  | "card_full"
   | "rate_limited"
   | "vision_unavailable"
   | "vision_failed"
@@ -43,7 +44,9 @@ export interface ScanSuccess {
   receiptNumber: string;
   receiptDate: string; // YYYY-MM-DD
   totalIdr: number;
-  stampsEarned: number;
+  stampsEarned: number; // stamps actually added to the card
+  /** Stamps the receipt was worth but couldn't be added because the card reached 10 (0 normally). */
+  stampsDropped: number;
   previousStamps: number;
   stamps: number; // new balance
 }

@@ -82,6 +82,12 @@ const sections: LegalSectionData[] = [
             <li>
               <strong>Maksimal 10 stempel per struk.</strong>
             </li>
+            <li>
+              Kartu menampung maksimal 10 stempel. Saat kartu penuh (10/10), struk baru tidak dapat
+              dipindai sampai Helena Burger gratis ditukarkan; struk tersebut tidak hangus dan dapat
+              dipindai setelah penukaran selama masih dalam batas 7 hari. Jika satu struk akan membuat
+              kartu melebihi 10 stempel, kartu diisi hingga 10 dan kelebihannya tidak ditambahkan.
+            </li>
             <li>Struk harus bertanggal dalam 7 hari terakhir.</li>
             <li>Setiap Nomor Struk hanya dapat diklaim sekali, oleh satu member.</li>
           </UL>
@@ -98,6 +104,12 @@ const sections: LegalSectionData[] = [
             <li>Minimum Rp 50.000 per receipt.</li>
             <li>
               <strong>Maximum 10 stamps per receipt.</strong>
+            </li>
+            <li>
+              A card holds a maximum of 10 stamps. When the card is full (10/10), new receipts cannot
+              be scanned until the free Helena Burger is redeemed; such a receipt is not forfeited and
+              may be scanned after redemption while still within the 7-day window. If a single receipt
+              would take the card above 10 stamps, the card is filled to 10 and the excess is not added.
             </li>
             <li>The receipt must be dated within the last 7 days.</li>
             <li>Each Receipt Number can be claimed once only, by one member.</li>
@@ -156,7 +168,7 @@ const sections: LegalSectionData[] = [
             Setelah 5 kali salah memasukkan PIN, penukaran dikunci selama 15 menit.
           </li>
           <li>
-            Jika berhasil, 10 stempel dikurangi (kelebihan stempel tetap tersimpan) dan tiket
+            Jika berhasil, 10 stempel dikurangi (kartu kembali ke 0/10) dan tiket
             kasir hijau langsung berlaku selama 3 menit. Tangkapan layar tidak sah.
           </li>
           <li>
@@ -175,7 +187,7 @@ const sections: LegalSectionData[] = [
           </li>
           <li>After 5 wrong PIN attempts, redemption is locked for 15 minutes.</li>
           <li>
-            On success, 10 stamps are deducted (extra stamps roll over) and a live green
+            On success, 10 stamps are deducted (the card returns to 0/10) and a live green
             counter ticket is shown for 3 minutes. Screenshots are not valid.
           </li>
           <li>

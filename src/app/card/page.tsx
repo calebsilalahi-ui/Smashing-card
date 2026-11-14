@@ -101,7 +101,8 @@ function CardDashboard() {
     setImpact((cur) => (cur && cur.id === id ? null : cur));
     if (!res) return;
     setMember((m) => (m ? { ...m, stamps: res.stamps } : m));
-    setToast(`+${res.stampsEarned} ${res.stampsEarned === 1 ? "stamp" : "stamps"} from Receipt #${res.receiptNumber} (${formatIdr(res.totalIdr)})`);
+    const base = `+${res.stampsEarned} ${res.stampsEarned === 1 ? "stamp" : "stamps"} from Receipt #${res.receiptNumber} (${formatIdr(res.totalIdr)})`;
+    setToast(res.stampsDropped > 0 ? `${base} · card full, ${res.stampsDropped} extra not added` : base);
   }, []);
 
   const onCapture = useCallback(
@@ -208,7 +209,7 @@ function CardDashboard() {
         {unlocked ? (
           <span className="inline-flex items-center gap-2 font-medium text-fg">
             <span className="h-1.5 w-1.5 rounded-full bg-flame" aria-hidden />
-            Reward unlocked{stamps > STAMPS_FOR_REWARD ? ` · +${stamps - STAMPS_FOR_REWARD} toward the next` : ""}
+            Card full · redeem to keep collecting
           </span>
         ) : (
           <>
@@ -218,20 +219,6 @@ function CardDashboard() {
       </p>
 
       <div className="flex flex-col gap-3">
-        <button
-          type="button"
-          data-testid="scan-cta"
-          onClick={() => {
-            sfx.unlock();
-            sfx.click();
-            setSimReceipt(null);
-            setScannerOpen(true);
-          }}
-          className="inline-flex h-14 w-full items-center justify-center gap-2.5 rounded-full bg-fg px-4 font-display text-[15px] tracking-wide text-ink transition-transform duration-150 ease-out active:scale-[0.97]"
-        >
-          <Camera size={20} aria-hidden /> SCAN MOKAPOS RECEIPT
-        </button>
-
         {unlocked && (
           <motion.button
             type="button"
@@ -248,6 +235,27 @@ function CardDashboard() {
           >
             <Gift size={20} aria-hidden /> Redeem free Helena Burger
           </motion.button>
+        )}
+
+        <button
+          type="button"
+          data-testid="scan-cta"
+          disabled={unlocked}
+          aria-describedby={unlocked ? "scan-locked-note" : undefined}
+          onClick={() => {
+            sfx.unlock();
+            sfx.click();
+            setSimReceipt(null);
+            setScannerOpen(true);
+          }}
+          className="inline-flex h-14 w-full items-center justify-center gap-2.5 rounded-full bg-fg px-4 font-display text-[15px] tracking-wide text-ink transition-transform duration-150 ease-out active:scale-[0.97] disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-fg-3 disabled:active:scale-100"
+        >
+          <Camera size={20} aria-hidden /> SCAN MOKAPOS RECEIPT
+        </button>
+        {unlocked && (
+          <p id="scan-locked-note" className="text-center text-[13px] text-fg-3">
+            Max 10 stamps. Redeem first; keep new receipts to scan afterwards.
+          </p>
         )}
       </div>
 

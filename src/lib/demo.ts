@@ -3,7 +3,7 @@
  * It reuses validateReceipt() from moka.ts so demo math is identical to production.
  */
 import { BRAND } from "./config";
-import { duplicateMessage, STAMPS_FOR_REWARD, todayWIB, validateReceipt } from "./moka";
+import { CARD_FULL_MESSAGE, duplicateMessage, MAX_CARD_STAMPS, STAMPS_FOR_REWARD, stampsAwardable, todayWIB, validateReceipt } from "./moka";
 import type { Member, RedeemResponse, ScanResponse, VisionReceipt } from "./types";
 
 export const DEMO_STAFF_PIN = "4829";
@@ -110,10 +110,15 @@ export function demoScan(receipt: DemoReceipt, overrides: Partial<VisionReceipt>
   if (state.claimed.includes(result.receiptNumber)) {
     return { ok: false, code: "duplicate", message: duplicateMessage(result.receiptNumber), receiptNumber: result.receiptNumber };
   }
+  if (state.stamps >= MAX_CARD_STAMPS) {
+    // Receipt is NOT consumed, so it can be scanned again after redeeming.
+    return { ok: false, code: "card_full", message: CARD_FULL_MESSAGE, receiptNumber: result.receiptNumber };
+  }
   const previousStamps = state.stamps;
+  const awarded = stampsAwardable(previousStamps, result.stampsEarned);
   const next: DemoState = {
     ...state,
-    stamps: previousStamps + result.stampsEarned,
+    stamps: previousStamps + awarded,
     claimed: [...state.claimed, result.receiptNumber],
   };
   write(next);
@@ -122,7 +127,8 @@ export function demoScan(receipt: DemoReceipt, overrides: Partial<VisionReceipt>
     receiptNumber: result.receiptNumber,
     receiptDate: result.receiptDate,
     totalIdr: result.totalIdr,
-    stampsEarned: result.stampsEarned,
+    stampsEarned: awarded,
+    stampsDropped: result.stampsEarned - awarded,
     previousStamps,
     stamps: next.stamps,
   };
@@ -169,7 +175,7 @@ export function demoReset(): DemoState {
   return fresh;
 }
 
-/** Mirrors the redeem_helena_burger RPC: 5 wrong PINs → 15-minute lockout; deducts 10, keeps rollover. */
+/** Mirrors the redeem_helena_burger RPC: 5 wrong PINs → 15-minute lockout; deducts 10 (card back to 0/10). */
 export function demoRedeem(pin: string): RedeemResponse {
   const state = read();
   const now = Date.now();
