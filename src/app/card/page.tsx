@@ -292,7 +292,7 @@ function CardDashboard() {
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -30, opacity: 0 }}
-            className="fixed inset-x-4 top-4 z-[110] mx-auto flex max-w-md items-center gap-2 rounded-2xl bg-emerald-live px-4 py-3 text-sm font-semibold text-white shadow-xl"
+            className="fixed inset-x-4 top-4 z-[65] mx-auto flex max-w-md items-center gap-2 rounded-2xl bg-emerald-live px-4 py-3 text-sm font-semibold text-white shadow-xl"
           >
             <CheckCircle2 size={20} className="shrink-0" aria-hidden />
             <span>{toast}</span>

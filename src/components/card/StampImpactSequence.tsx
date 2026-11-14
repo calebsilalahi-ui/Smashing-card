@@ -92,7 +92,7 @@ export function StampImpactSequence({ from, earned, reduced, onSlam, onShake, on
 
       later(() => {
         if (rect) {
-          setDrops((d) => [...d, { key, x: rect.x, y: rect.y, size: rect.w, rot, }]);
+          setDrops((d) => [...d, { key, x: rect.x, y: rect.y, size: rect.w, rot }]);
         }
       }, k * gap);
 

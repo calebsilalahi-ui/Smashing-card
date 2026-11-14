@@ -1,5 +1,5 @@
 import "server-only";
-import webpush from "web-push";
+import { sendNotification, setVapidDetails } from "web-push";
 
 let configured: boolean | null = null;
 
@@ -9,7 +9,7 @@ export function configureWebPush(): boolean {
   const priv = process.env.VAPID_PRIVATE_KEY;
   const subject = process.env.VAPID_SUBJECT || "mailto:privacy@smashingburger.id";
   if (!pub || !priv) return (configured = false);
-  webpush.setVapidDetails(subject, pub, priv);
+  setVapidDetails(subject, pub, priv);
   return (configured = true);
 }
 
@@ -26,7 +26,7 @@ export async function sendPush(
   payload: { title: string; body: string; url?: string; tag?: string },
 ): Promise<"sent" | "gone" | "error"> {
   try {
-    await webpush.sendNotification(
+    await sendNotification(
       { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
       JSON.stringify(payload),
       { TTL: 60 * 60 * 12, urgency: "normal" },

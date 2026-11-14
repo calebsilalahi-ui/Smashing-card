@@ -79,7 +79,7 @@ export function LiveCounterTicket({ fullName, memberCode, redeemedAt, onClose }:
       role="dialog"
       aria-modal="true"
       aria-label="Live redemption ticket"
-      className={`fixed inset-0 z-[100] flex flex-col overflow-y-auto transition-colors duration-500 ${expired ? "bg-gray-600" : "bg-emerald-live"} text-white`}
+      className={`fixed inset-0 z-[200] flex flex-col overflow-y-auto transition-colors duration-500 ${expired ? "bg-gray-600" : "bg-emerald-live"} text-white`}
     >
       <style>{`
         @keyframes lt-flicker { 0%,100% { transform: scaleY(1) scaleX(1); } 25% { transform: scaleY(1.12) scaleX(.94); } 50% { transform: scaleY(.92) scaleX(1.06); } 75% { transform: scaleY(1.08) scaleX(.97); } }
