@@ -405,10 +405,10 @@ function Back({
         <div
           role="group"
           aria-label={`${shown} of ${STAMPS_FOR_REWARD} stamps`}
-          style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: "5cqw", margin: "3cqw 0" }}
+          style={{ flex: 1, display: "flex", flexDirection: "row", justifyContent: "center", gap: "16cqw", margin: "4cqw 0" }}
         >
           {SLOT_ROWS.map((row) => (
-          <div key={row[0]} style={{ display: "flex", justifyContent: "space-between" }}>
+          <div key={row[0]} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           {row.map((i) => {
             const earned = i < shown;
             return (
@@ -417,7 +417,7 @@ function Back({
                 data-slot={i}
                 style={{
                   position: "relative",
-                  width: "15cqw",
+                  width: "17cqw",
                   aspectRatio: "1 / 1",
                   borderRadius: "50%",
                   display: "flex",
@@ -529,7 +529,7 @@ function Back({
   );
 }
 
-/** Two rows of five stamps, sized to the full card width. */
+/** Two vertical columns of five stamps: 1–5 on the left, 6–10 on the right. */
 const SLOT_ROWS: number[][] = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]];
 
 export function VipCard3D({
