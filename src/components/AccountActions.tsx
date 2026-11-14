@@ -94,7 +94,7 @@ export function AccountActions({ demo }: { demo: boolean }) {
               autoCapitalize="characters"
               autoComplete="off"
               aria-label="Type DELETE to confirm"
-              className="mt-3 w-full rounded-lg border border-cream/20 bg-espresso px-3 py-2 text-cream outline-none focus:border-flame"
+              className="mt-3 w-full rounded-lg border border-cream/20 bg-espresso px-3 py-2 text-cream focus:border-flame"
             />
             <div className="mt-4 flex gap-2">
               <button type="button" className={btn} onClick={() => setConfirmOpen(false)} disabled={busy === "delete"}>
@@ -104,7 +104,7 @@ export function AccountActions({ demo }: { demo: boolean }) {
                 type="button"
                 disabled={typed !== "DELETE" || busy === "delete"}
                 onClick={onDelete}
-                className="w-full rounded-xl bg-flame px-4 py-3 text-sm font-bold text-white transition active:scale-[0.98] disabled:opacity-40"
+                className="w-full rounded-xl bg-flame-deep px-4 py-3 text-sm font-bold text-white transition active:scale-[0.98] disabled:opacity-40"
               >
                 {busy === "delete" ? "Deleting…" : "Delete forever"}
               </button>

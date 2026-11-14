@@ -114,7 +114,7 @@ export function CookieConsentBanner() {
             <div className="flex items-start justify-between gap-3 rounded-xl bg-espresso/70 p-3">
               <div>
                 <p className="text-xs font-bold text-cream-soft">Strictly necessary / Sangat diperlukan</p>
-                <p className="mt-0.5 text-[11px] leading-snug text-cream/65">
+                <p className="mt-0.5 text-xs leading-snug text-cream/65">
                   Supabase Auth login session cookies and security. Always on.
                 </p>
               </div>
@@ -123,7 +123,7 @@ export function CookieConsentBanner() {
             <div className="flex items-start justify-between gap-3 rounded-xl bg-espresso/70 p-3">
               <div>
                 <p className="text-xs font-bold text-cream-soft">Preferences / Preferensi</p>
-                <p className="mt-0.5 text-[11px] leading-snug text-cream/65">
+                <p className="mt-0.5 text-xs leading-snug text-cream/65">
                   Sound on/off, your cookie choice and demo state, stored in localStorage.
                 </p>
               </div>
@@ -154,7 +154,7 @@ export function CookieConsentBanner() {
           <button
             type="button"
             onClick={() => save(true)}
-            className={`min-h-11 rounded-full bg-flame px-3 text-xs font-extrabold text-white active:scale-[0.98] ${
+            className={`min-h-11 rounded-full bg-flame px-3 text-xs font-extrabold text-espresso-deep active:scale-[0.98] ${
               expanded ? "col-span-2" : ""
             }`}
           >

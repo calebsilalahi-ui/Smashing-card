@@ -64,11 +64,11 @@ export function ConsentGate() {
             type="checkbox"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            className="mt-0.5 h-5 w-5 shrink-0 accent-flame"
+            className="mt-0.5 h-6 w-6 shrink-0 accent-flame"
             aria-required="true"
           />
-          <span className="text-xs leading-relaxed text-cream/90">
-            <span className="mr-1 rounded bg-flame/20 px-1 py-0.5 text-[10px] font-bold uppercase text-flame">Required</span>
+          <span className="text-sm leading-relaxed text-cream/90">
+            <span className="mr-1 rounded bg-flame/20 px-1.5 py-0.5 text-xs font-bold uppercase text-gold">Required</span>
             I agree to the{" "}
             <a href="/terms" className="font-semibold text-gold underline underline-offset-2">Terms &amp; Conditions</a> and{" "}
             <a href="/privacy" className="font-semibold text-gold underline underline-offset-2">Privacy Policy</a>, including
@@ -87,10 +87,10 @@ export function ConsentGate() {
             type="checkbox"
             checked={push}
             onChange={(e) => setPush(e.target.checked)}
-            className="mt-0.5 h-5 w-5 shrink-0 accent-flame"
+            className="mt-0.5 h-6 w-6 shrink-0 accent-flame"
           />
-          <span className="text-xs leading-relaxed text-cream/90">
-            <span className="mr-1 rounded bg-cream/15 px-1 py-0.5 text-[10px] font-bold uppercase text-cream/80">Optional</span>
+          <span className="text-sm leading-relaxed text-cream/90">
+            <span className="mr-1 rounded bg-cream/15 px-1 py-0.5 text-xs font-bold uppercase text-cream/80">Optional</span>
             Send me daily stamp reminder push notifications.
             <span className="mt-1 block text-cream/65">Kirimi saya notifikasi pengingat stempel harian.</span>
           </span>
@@ -117,7 +117,7 @@ export function ConsentGate() {
         <button
           type="button"
           onClick={openDemo}
-          className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-flame to-ember px-4 text-sm font-extrabold text-white shadow-lg shadow-flame/30 active:scale-[0.98]"
+          className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-flame to-ember px-4 text-sm font-extrabold text-espresso-deep shadow-lg shadow-flame/30 active:scale-[0.98]"
         >
           <Zap size={18} aria-hidden /> Open Demo Mode
         </button>
@@ -129,7 +129,7 @@ export function ConsentGate() {
         </p>
       )}
 
-      <p className="mt-3 text-center text-[10px] text-cream/45">Policy version {POLICY_VERSION}</p>
+      <p className="mt-3 text-center text-xs text-cream/70">Policy version {POLICY_VERSION}</p>
     </section>
   );
 }

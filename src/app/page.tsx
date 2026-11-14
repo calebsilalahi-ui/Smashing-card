@@ -23,7 +23,11 @@ function Landing() {
   const [demo, setDemo] = useState(false);
 
   useEffect(() => {
-    if (isDemoRequested(params)) {
+    // Persist/clear the tab's demo flag, but only an explicit ?demo=true link redirects —
+    // otherwise a presenter could never return to the landing page / consent gate in this tab.
+    const active = isDemoRequested(params);
+    const explicit = ["true", "1"].includes(params.get("demo") ?? "");
+    if (active && explicit) {
       setDemo(true);
       router.replace("/card?demo=true");
     }

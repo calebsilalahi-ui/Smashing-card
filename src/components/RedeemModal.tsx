@@ -131,7 +131,7 @@ export function RedeemModal({ open, onClose, demo, member, onRedeemed }: Props) 
       >
         <div className="checker-strip shrink-0" aria-hidden />
         <div className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center px-4 pb-6 pt-4 text-center">
-          <button type="button" onClick={onClose} aria-label="Close" className="self-end rounded-full p-2 text-cream/70 hover:bg-cream/10">
+          <button type="button" onClick={onClose} aria-label="Close" className="grid h-11 w-11 self-end place-items-center rounded-full text-cream/80 hover:bg-cream/10">
             <X size={20} aria-hidden />
           </button>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -145,6 +145,7 @@ export function RedeemModal({ open, onClose, demo, member, onRedeemed }: Props) 
             className="mt-5 flex gap-3"
             animate={shake && !reduce ? { x: [0, -12, 12, -8, 8, 0] } : { x: 0 }}
             transition={{ duration: 0.4 }}
+            role="status"
             aria-label={`PIN, ${pin.length} of 4 digits entered`}
           >
             {[0, 1, 2, 3].map((i) => (
@@ -189,7 +190,7 @@ export function RedeemModal({ open, onClose, demo, member, onRedeemed }: Props) 
             </button>
           </div>
 
-          {demo && <p className="mt-4 text-xs text-cream/45">Demo Staff PIN: {DEMO_STAFF_PIN}</p>}
+          {demo && <p className="mt-4 text-xs text-cream/70">Demo Staff PIN: {DEMO_STAFF_PIN}</p>}
         </div>
       </motion.div>
     </AnimatePresence>

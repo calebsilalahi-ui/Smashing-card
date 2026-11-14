@@ -10,7 +10,8 @@
   --color-gold: #f9a65a;
   --color-cream: #e4d8ca;
   --color-cream-soft: #f3ece4;
-  --color-emerald-live: #059669;
+  --color-emerald-live: #047857; /* white text 5.48:1 (WCAG AA) */
+  --color-flame-deep: #d63a1b; /* white text 4.69:1 — use for filled surfaces carrying small white text */
 
   --font-display: "Archivo Black", "Impact", "Arial Black", system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -31,6 +32,13 @@ body {
 
 body {
   min-height: 100dvh;
+}
+
+/* Visible keyboard focus everywhere (WCAG 2.4.7). Gold reads on espresso, flame and emerald surfaces. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 .font-display {

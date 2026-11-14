@@ -202,7 +202,7 @@ export function ReceiptScannerModal({ open, onClose, onCapture, busy, simulatedR
           type="button"
           onClick={() => fileRef.current?.click()}
           disabled={working || simulating}
-          className="flex flex-col items-center gap-1 text-[11px] font-semibold text-cream disabled:opacity-40"
+          className="flex flex-col items-center gap-1 text-xs font-semibold text-cream disabled:opacity-40"
         >
           <span className="grid h-12 w-12 place-items-center rounded-full border border-cream/30 bg-black/50">
             <ImagePlus size={20} aria-hidden />

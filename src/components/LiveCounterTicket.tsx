@@ -91,16 +91,16 @@ export function LiveCounterTicket({ fullName, memberCode, redeemedAt, onClose }:
       <div className={`checker-strip lt-march shrink-0 ${expired ? "opacity-30" : ""}`} aria-hidden />
 
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center px-4 pb-6 pt-4 text-center">
-        <p className="font-display text-xs tracking-[0.25em] text-white/80">SMASHING BURGER · LIVE TICKET</p>
+        <p className="font-display text-xs tracking-[0.25em] text-white">SMASHING BURGER · LIVE TICKET</p>
 
         {expired ? (
           <div className="mt-6" role="alert">
             <p className="font-display text-3xl leading-tight">TICKET EXPIRED</p>
-            <p className="mt-2 text-sm text-white/85">This proof is no longer valid.</p>
+            <p className="mt-2 text-sm text-white">This proof is no longer valid.</p>
           </div>
         ) : (
           <>
-            <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-white/80">Valid for</p>
+            <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-white">Valid for</p>
             <p className="font-display text-7xl tabular-nums leading-none" aria-live="off">
               {mm}:{ss}
             </p>
@@ -112,14 +112,14 @@ export function LiveCounterTicket({ fullName, memberCode, redeemedAt, onClose }:
         </div>
 
         <div className="mt-1 w-full rounded-2xl bg-black/25 px-4 py-3">
-          <p className="text-[11px] uppercase tracking-widest text-white/70">Live time</p>
+          <p className="text-xs uppercase tracking-widest text-white">Live time</p>
           <p className="font-display text-3xl tabular-nums">{wibClock.format(new Date(now))} WIB</p>
         </div>
 
         <div className="mt-3 w-full rounded-2xl bg-white/10 p-4">
           <p className="font-display text-xl leading-tight">{fullName}</p>
-          <p className="text-sm text-white/85">#{memberCode}</p>
-          <p className="mt-1 text-xs text-white/75">Redeemed {redeemedLabel}</p>
+          <p className="text-sm text-white">#{memberCode}</p>
+          <p className="mt-1 text-xs text-white">Redeemed {redeemedLabel}</p>
           <div className="mt-3 flex items-center gap-3 rounded-xl bg-black/20 p-2 text-left">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/helena-burger.png" alt="" className="h-14 w-14 rounded-lg object-cover" />
@@ -128,7 +128,7 @@ export function LiveCounterTicket({ fullName, memberCode, redeemedAt, onClose }:
         </div>
 
         <div className="mt-3 w-full rounded-2xl border-4 border-white bg-white px-3 py-3 text-espresso-deep">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Staff instruction</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Staff instruction</p>
           <p className="font-display text-lg leading-tight">RING UP: VIP LOYALTY — FREE HELENA BURGER</p>
         </div>
 

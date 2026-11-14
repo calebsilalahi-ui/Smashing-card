@@ -58,7 +58,7 @@ export function WebViewGuard() {
 
         <ol className="mt-6 space-y-3">
           <li className="flex items-center gap-3 rounded-2xl bg-espresso p-3">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-flame text-sm font-extrabold text-white">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-flame text-sm font-extrabold text-espresso-deep">
               1
             </span>
             <p className="flex-1 text-sm text-cream">
@@ -68,7 +68,7 @@ export function WebViewGuard() {
             </p>
           </li>
           <li className="flex items-center gap-3 rounded-2xl bg-espresso p-3">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-flame text-sm font-extrabold text-white">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-flame text-sm font-extrabold text-espresso-deep">
               2
             </span>
             <p className="flex-1 text-sm text-cream">
@@ -84,19 +84,19 @@ export function WebViewGuard() {
         <button
           type="button"
           onClick={copy}
-          className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-flame px-4 text-sm font-extrabold text-white active:scale-[0.98]"
+          className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-flame px-4 text-sm font-extrabold text-espresso-deep active:scale-[0.98]"
         >
           {copied ? <Check size={18} aria-hidden /> : <Copy size={18} aria-hidden />}
           {copied ? "Link copied / Tautan disalin" : "Copy link / Salin tautan"}
         </button>
-        <p className="mt-2 text-center text-[11px] text-cream/55">
+        <p className="mt-2 text-center text-xs text-cream/70">
           Or paste the link into {browser} manually. / Atau tempel tautan ke {browser}.
         </p>
 
         <button
           type="button"
           onClick={() => setShow(false)}
-          className="mx-auto mt-5 min-h-11 px-4 text-xs font-semibold text-cream/55 underline underline-offset-2"
+          className="mx-auto mt-5 min-h-11 px-4 text-xs font-semibold text-cream/70 underline underline-offset-2"
         >
           Continue anyway / Lanjutkan saja
         </button>

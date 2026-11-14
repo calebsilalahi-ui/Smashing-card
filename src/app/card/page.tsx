@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, CheckCircle2, Gift, X, Zap } from "lucide-react";
+import { AlertTriangle, Camera, CheckCircle2, Gift, X, Zap } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -165,9 +165,9 @@ function CardDashboard() {
   const code = member.memberCode.replace(/^#/, "");
 
   return (
-    <main className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col gap-5 overflow-x-hidden bg-espresso px-4 pb-28 pt-4 text-cream">
+    <main className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col gap-5 overflow-x-hidden bg-espresso px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-4 text-cream">
       {demo && (
-        <div className="-mx-4 -mt-4 bg-flame px-4 py-1 text-center font-display text-[11px] tracking-[0.25em] text-white">
+        <div className="-mx-4 -mt-4 bg-flame px-4 py-1 text-center font-display text-xs tracking-[0.25em] text-espresso-deep">
           DEMO MODE
         </div>
       )}
@@ -181,6 +181,15 @@ function CardDashboard() {
           <h1 className="truncate font-display text-lg leading-tight text-cream">{member.fullName}</h1>
           <p className="text-xs text-gold">#{code}</p>
         </div>
+        <button
+            type="button"
+            data-testid="presenter-pill"
+            onClick={() => (demo ? setDrawerOpen((o) => !o) : setSwitchOpen(true))}
+            aria-expanded={demo ? drawerOpen : undefined}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-gold/50 bg-espresso-deep/95 px-3 text-sm font-bold text-gold transition active:scale-95"
+          >
+            <Zap size={16} aria-hidden /> <span className="max-[380px]:sr-only">Demo</span>
+          </button>
         <SoundToggle />
       </header>
 
@@ -214,9 +223,9 @@ function CardDashboard() {
           setSimReceipt(null);
           setScannerOpen(true);
         }}
-        className="w-full rounded-2xl bg-gradient-to-r from-flame to-ember px-4 py-4 font-display text-base text-white shadow-[0_10px_30px_rgba(245,71,37,.35)] transition active:scale-[0.98]"
+        className="w-full rounded-2xl bg-gradient-to-r from-flame to-ember inline-flex items-center justify-center gap-2 px-4 py-4 font-display text-base text-espresso-deep shadow-[0_10px_30px_rgba(245,71,37,.35)] transition active:scale-[0.98]"
       >
-        📸 SCAN MOKAPOS RECEIPT
+        <Camera size={22} strokeWidth={2.5} aria-hidden /> SCAN MOKAPOS RECEIPT
       </button>
 
       {unlocked && (
@@ -239,19 +248,10 @@ function CardDashboard() {
       <AccountActions demo={demo} />
 
       <footer className="flex justify-center gap-4 text-xs text-cream/60">
-        <Link href="/privacy" className="underline">Privacy</Link>
-        <Link href="/terms" className="underline">Terms</Link>
+        <Link href="/privacy" className="inline-flex min-h-11 items-center px-2 underline underline-offset-2">Privacy</Link>
+        <Link href="/terms" className="inline-flex min-h-11 items-center px-2 underline underline-offset-2">Terms</Link>
       </footer>
 
-      {/* Demo pill */}
-      <button
-        type="button"
-        data-testid="presenter-pill"
-        onClick={() => (demo ? setDrawerOpen((o) => !o) : setSwitchOpen(true))}
-        className="fixed bottom-4 right-4 z-50 flex items-center gap-1.5 rounded-full border border-gold/50 bg-espresso-deep/95 px-4 py-2.5 text-sm font-bold text-gold shadow-lg backdrop-blur transition active:scale-95"
-      >
-        <Zap size={16} aria-hidden /> Demo Mode
-      </button>
 
       <PresenterDrawer
         open={drawerOpen}
@@ -329,7 +329,7 @@ function CardDashboard() {
         <div role="dialog" aria-modal="true" aria-labelledby="switch-title" className="fixed inset-0 z-[120] grid place-items-center bg-black/70 p-4">
           <div className="w-full max-w-sm rounded-2xl border border-gold/40 bg-espresso-deep p-5">
             <div className="flex items-start justify-between">
-              <h2 id="switch-title" className="font-display text-lg text-gold">⚡ Demo Mode</h2>
+              <h2 id="switch-title" className="flex items-center gap-2 font-display text-lg text-gold"><Zap size={18} aria-hidden /> Demo Mode</h2>
               <button type="button" aria-label="Close" onClick={() => setSwitchOpen(false)} className="rounded-full p-1 text-cream/70">
                 <X size={18} aria-hidden />
               </button>
@@ -344,7 +344,7 @@ function CardDashboard() {
               <button
                 type="button"
                 onClick={() => window.location.assign("/card?demo=true")}
-                className="w-full rounded-xl bg-gradient-to-r from-flame to-ember px-4 py-3 text-sm font-bold text-white"
+                className="w-full rounded-xl bg-gradient-to-r from-flame to-ember px-4 py-3 text-sm font-bold text-espresso-deep"
               >
                 Open sandbox
               </button>

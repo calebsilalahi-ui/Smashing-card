@@ -101,9 +101,9 @@ export function LegalShell({ title, intro, sections }: LegalShellProps) {
               aria-selected={lang === l}
               aria-controls={`panel-${l}`}
               onClick={() => setLang(l)}
-              className={`min-h-10 min-w-14 rounded-full px-4 text-sm font-bold uppercase tracking-wide transition-colors ${
+              className={`min-h-11 min-w-14 rounded-full px-4 text-sm font-bold uppercase tracking-wide transition-colors ${
                 lang === l
-                  ? "bg-flame text-cream-soft"
+                  ? "bg-flame text-espresso-deep"
                   : "text-cream hover:text-cream-soft"
               }`}
             >
@@ -141,7 +141,7 @@ export function LegalShell({ title, intro, sections }: LegalShellProps) {
                     <li key={s.id}>
                       <a
                         href={`#${s.id}${suffix}`}
-                        className="flex gap-2 py-0.5 text-cream underline-offset-4 hover:text-gold hover:underline"
+                        className="flex min-h-11 items-center gap-2 py-1 text-cream underline-offset-4 hover:text-gold hover:underline"
                       >
                         <span className="w-6 shrink-0 text-flame">{i + 1}.</span>
                         <span>{s.title[l]}</span>
@@ -174,13 +174,13 @@ export function LegalShell({ title, intro, sections }: LegalShellProps) {
           aria-label="Footer"
           className="mx-auto flex max-w-2xl flex-wrap gap-x-6 gap-y-2 px-4 py-6 text-sm"
         >
-          <Link href="/privacy" className="py-1 hover:text-gold">
+          <Link href="/privacy" className="inline-flex min-h-11 items-center hover:text-gold">
             {t.privacy}
           </Link>
-          <Link href="/terms" className="py-1 hover:text-gold">
+          <Link href="/terms" className="inline-flex min-h-11 items-center hover:text-gold">
             {t.terms}
           </Link>
-          <Link href="/" className="py-1 text-gold hover:text-cream-soft">
+          <Link href="/" className="inline-flex min-h-11 items-center text-gold hover:text-cream-soft">
             {t.back}
           </Link>
         </nav>

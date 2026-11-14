@@ -1,6 +1,7 @@
 "use client";
+import { RotateCw } from "lucide-react";
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import {
   animate,
   motion,
@@ -336,15 +337,6 @@ export function CardStage({
     }
   };
 
-  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      interact();
-      requestFlip(!flippedRef.current);
-    }
-  };
-
   // ---- stamp impact orchestration ------------------------------------------
   const [session, setSession] = useState<Session | null>(null);
   const [override, setOverride] = useState<number | null>(null);
@@ -419,15 +411,11 @@ export function CardStage({
     <div className={`flex flex-col items-center ${className ?? ""}`}>
       <motion.div
         ref={stageRef}
-        role="button"
-        tabIndex={0}
-        aria-label={flipped ? "Stamp card, back. Tap to flip to front" : "VIP card, front. Tap to flip to stamp card"}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={(e) => finishPress(e, false)}
         onPointerCancel={(e) => finishPress(e, true)}
         onPointerLeave={onPointerLeave}
-        onKeyDown={onKeyDown}
         style={{
           x: shakeX,
           y: shakeY,
@@ -436,7 +424,6 @@ export function CardStage({
           cursor: "grab",
           userSelect: "none",
           WebkitUserSelect: "none",
-          outline: "none",
           position: "relative",
         }}
       >
@@ -476,7 +463,20 @@ export function CardStage({
           }
         />
       </motion.div>
-      <p className="mt-1 text-center text-xs tracking-wide text-cream/60">Tap or swipe to flip</p>
+      <button
+        type="button"
+        onClick={() => {
+          sfx.unlock();
+          interact();
+          requestFlip(!flippedRef.current);
+        }}
+        aria-pressed={flipped}
+        className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-xs font-semibold tracking-wide text-cream/75 transition hover:bg-cream/10 active:scale-95"
+      >
+        <RotateCw size={14} aria-hidden />
+        {flipped ? "Show front" : "Show stamps"}
+        <span className="text-cream/60" aria-hidden>· or swipe</span>
+      </button>
     </div>
   );
 }

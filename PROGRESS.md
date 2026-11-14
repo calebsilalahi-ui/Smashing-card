@@ -34,3 +34,14 @@
 - r.jina.ai is blocked by the egress proxy; React Bits sources fetched from GitHub raw instead.
 - Integration fixes: web-push named imports (Turbopack ESM), cookie banner clears `sb-sfx-muted`, live ticket z-index above toasts.
 - Smoke test (360px, prod build, no keys): redirect, reset, +2, +10 unlock, duplicate block, PIN 4829 → ticking live ticket, /, /privacy, /terms — all PASS, 0 console errors.
+
+## UI/UX Pro Max pass (skill DB not installed → built-in priority table used)
+- [x] A11y: global gold :focus-visible ring; axe-core = 0 violations on landing, card, presenter, redeem, live ticket, privacy
+- [x] Contrast: dark espresso text on flame fills (logo-style, 5.2:1); emerald ticket → #047857 (5.5:1); soft cream ≥ 65%; flame-deep token for white-on-red
+- [x] Card: removed nested-interactive role=button; explicit 44px "Show stamps / Show front" flip button (keyboard + screen reader)
+- [x] Icons: emoji → Lucide SVG (Camera, Zap, Flame)
+- [x] Touch: mute, close, legal tabs/links, footer links ≥ 44px; switch hit-area extended; 24px checkboxes in full-row labels
+- [x] Layout: Demo pill moved into header (no longer covers SCAN CTA); safe-area bottom padding; icon-only Demo button < 380px
+- [x] Typography: no UI text < 12px (sample thermal receipt is role="img")
+- [x] Perf: images 502 KB → 148 KB (8-bit PNG, resized to display size)
+- [x] Bug: landing no longer bounces to /card after a demo session (only explicit ?demo=true redirects)

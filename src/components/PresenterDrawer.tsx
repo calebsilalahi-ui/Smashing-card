@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { X, Zap } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 interface Props {
@@ -41,17 +41,17 @@ export function PresenterDrawer({ open, onClose, onSimulateRegular, onSimulateFe
             <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-cream/25" />
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h2 className="font-display text-lg text-gold">⚡ Presenter Mode</h2>
+                <h2 className="flex items-center gap-2 font-display text-lg text-gold"><Zap size={18} aria-hidden /> Presenter Mode</h2>
                 <p className="mt-1 text-xs text-cream/65">
                   Runs locally in your browser with the same validation rules as production. No real data is touched.
                 </p>
               </div>
-              <button type="button" onClick={onClose} aria-label="Close presenter drawer" className="rounded-full p-2 text-cream/70 hover:bg-cream/10">
+              <button type="button" onClick={onClose} aria-label="Close presenter drawer" className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-cream/80 hover:bg-cream/10">
                 <X size={18} aria-hidden />
               </button>
             </div>
             <div className="mt-4 grid gap-2.5">
-              <button type="button" data-testid="presenter-regular" disabled={busy} onClick={onSimulateRegular} className={`${base} bg-gradient-to-r from-flame to-ember text-white`}>
+              <button type="button" data-testid="presenter-regular" disabled={busy} onClick={onSimulateRegular} className={`${base} bg-gradient-to-r from-flame to-ember text-espresso-deep`}>
                 Simulate MokaPOS Scan: Rp 110.000 (+2 Stamps)
               </button>
               <button type="button" data-testid="presenter-feast" disabled={busy} onClick={onSimulateFeast} className={`${base} bg-gradient-to-r from-ember to-gold text-espresso-deep`}>

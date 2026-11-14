@@ -26,7 +26,7 @@ export function SampleMokaReceipt({ receipt, className = "" }: { receipt: DemoRe
   const change = cash - receipt.totalIdr;
 
   return (
-    <div className={`relative w-full text-[#222] ${className}`} style={{ filter: "drop-shadow(0 6px 10px rgba(0,0,0,.35))" }}>
+    <div role="img" aria-label={`Sample MokaPOS receipt #${receipt.receiptNumber}, total ${rp(receipt.totalIdr)}`} className={`relative w-full text-[#222] ${className}`} style={{ filter: "drop-shadow(0 6px 10px rgba(0,0,0,.35))" }}>
       <div
         className="bg-[#fbfaf6] px-3 pb-2 pt-3 text-[9px] leading-[1.35] sm:text-[10px]"
         style={{ fontFamily: "ui-monospace, 'Courier New', monospace" }}

@@ -27,7 +27,7 @@ export function SoundToggle({ className = "" }: { className?: string }) {
           sfx.click();
         }
       }}
-      className={`grid h-10 w-10 place-items-center rounded-full border border-cream/20 bg-espresso-soft/70 text-cream transition active:scale-95 hover:border-gold/60 ${className}`}
+      className={`grid h-11 w-11 place-items-center rounded-full border border-cream/20 bg-espresso-soft/70 text-cream transition active:scale-95 hover:border-gold/60 ${className}`}
     >
       {muted ? <VolumeX size={18} aria-hidden /> : <Volume2 size={18} aria-hidden />}
     </button>

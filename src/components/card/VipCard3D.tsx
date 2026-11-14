@@ -1,4 +1,5 @@
 "use client";
+import { Flame } from "lucide-react";
 
 import type { CSSProperties, ReactNode, Ref } from "react";
 import { motion, useReducedMotion, type MotionValue } from "motion/react";
@@ -347,8 +348,12 @@ function Back({
             textShadow: unlocked ? "0 0.4cqw 1cqw rgba(60,10,0,0.7)" : undefined,
           }}
         >
-          {unlocked
-            ? "🔥 REWARD UNLOCKED: 1 FREE HELENA BURGER! TAP TO REDEEM AT COUNTER"
+          {unlocked ? (
+            <>
+              <Flame aria-hidden style={{ display: "inline", width: "1.15em", height: "1.15em", verticalAlign: "-0.2em", marginRight: "0.25em", color: "#F9A65A" }} />
+              REWARD UNLOCKED: 1 FREE HELENA BURGER! TAP TO REDEEM AT COUNTER
+            </>
+          )
             : `FREE HELENA BURGER IN ${remaining} MORE ${remaining === 1 ? "STAMP" : "STAMPS"} — ON YOUR NEXT ORDER!`}
         </div>
       </div>
@@ -464,7 +469,6 @@ function Back({
               onRedeemClick?.();
             }}
             style={{ position: "relative", display: "block", width: "100%", cursor: "pointer", background: "none", border: 0, padding: 0, font: "inherit" }}
-            aria-label="Redeem free Helena Burger at the counter"
           >
             {rewardInner}
           </button>

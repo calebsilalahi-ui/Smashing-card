@@ -154,7 +154,7 @@ export function PushToggle({ demo = false }: { demo?: boolean }) {
           aria-label="Daily stamp reminders"
           onClick={toggle}
           disabled={busy || unsupported}
-          className={`relative h-8 w-14 shrink-0 rounded-full transition-colors disabled:opacity-50 ${
+          className={`relative h-8 w-14 shrink-0 rounded-full before:absolute before:-inset-x-1 before:-inset-y-2 before:content-[""] transition-colors disabled:opacity-50 ${
             on ? "bg-flame" : "bg-cream/25"
           }`}
         >
