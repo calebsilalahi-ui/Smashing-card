@@ -33,7 +33,7 @@ export function SampleMokaReceipt({ receipt, className = "" }: { receipt: DemoRe
       >
         <div className="flex flex-col items-center text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/smashing-logo-mark.png" alt="" className="h-8 w-8 object-contain grayscale" />
+          <img src="/images/smashing-logo-mark.png" alt="" className="h-8 w-8 object-contain" />
           <div className="mt-1 text-[12px] font-bold tracking-wider">SMASHING BURGER</div>
           <div>Jakarta</div>
         </div>

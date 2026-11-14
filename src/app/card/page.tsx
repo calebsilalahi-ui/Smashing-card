@@ -208,7 +208,7 @@ function CardDashboard() {
         {unlocked ? (
           <span className="inline-flex items-center gap-2 font-medium text-fg">
             <span className="h-1.5 w-1.5 rounded-full bg-flame" aria-hidden />
-            Reward unlocked — {stamps}/{STAMPS_FOR_REWARD} stamps
+            Reward unlocked{stamps > STAMPS_FOR_REWARD ? ` · +${stamps - STAMPS_FOR_REWARD} toward the next` : ""}
           </span>
         ) : (
           <>
