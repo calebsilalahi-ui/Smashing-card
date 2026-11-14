@@ -73,12 +73,10 @@ export function CardStage({
   const idleX = useMotionValue(0);
   const idleY = useMotionValue(0);
   const idleWeight = useMotionValue(1);
-  const shakeX = useMotionValue(0);
-  const shakeY = useMotionValue(0);
+  const pressScale = useMotionValue(1);
   const rotateY = useTransform([flip, tiltY, idleY], ([f, t, i]: number[]) => f + t + i);
   const rotateX = useTransform([tiltX, idleX], ([t, i]: number[]) => t + i);
 
-  const cardRootRef = useRef<HTMLDivElement>(null);
   const flippedRef = useRef(flipped);
   const cbRef = useRef({ onFlippedChange, onImpactComplete });
   useEffect(() => {
@@ -89,7 +87,6 @@ export function CardStage({
   // ---- idle auto-rotation (pauses while interacting, resumes after ~2.5s) ---
   const resumeTimer = useRef<number | null>(null);
   const weightAnim = useRef<AnimationPlaybackControls | null>(null);
-  const lastVars = useRef({ mx: 50, my: 50 });
 
   const interact = useCallback(() => {
     weightAnim.current?.stop();
@@ -116,15 +113,6 @@ export function CardStage({
     idleY.set(Math.sin(t * (preview ? 0.55 : 0.7)) * ampY * w);
     idleX.set(Math.sin(t * 0.45 + 1) * ampX * w);
 
-    const el = cardRootRef.current;
-    if (!el) return;
-    const mx = clamp(50 + (tiltY.get() + idleY.get()) * 2.2, 0, 100);
-    const my = clamp(50 - (tiltX.get() + idleX.get()) * 3, 0, 100);
-    if (Math.abs(mx - lastVars.current.mx) > 0.35 || Math.abs(my - lastVars.current.my) > 0.35) {
-      lastVars.current = { mx, my };
-      el.style.setProperty("--mx", mx.toFixed(1));
-      el.style.setProperty("--my", my.toFixed(1));
-    }
   });
 
   // ---- flipping (spring physics) -------------------------------------------
@@ -375,12 +363,21 @@ export function CardStage({
 
   const handleSlam = useCallback((count: number) => {
     setSession((s) => (s ? { ...s, count } : s));
-  }, []);
+    interact(); // keep idle rotation parked while stamps land
+  }, [interact]);
 
-  const handleShake = useCallback(() => {
-    animate(shakeX, [0, -5, 4, -3, 1.5, 0], { duration: 0.18, ease: "easeOut" });
-    animate(shakeY, [0, 3, -4, 2, -1, 0], { duration: 0.18, ease: "easeOut" });
-  }, [shakeX, shakeY]);
+  // Tasteful press: the card dips toward the table on contact, then springs back.
+  const pressAnim = useRef<AnimationPlaybackControls | null>(null);
+  const handlePress = useCallback(() => {
+    pressAnim.current?.stop();
+    pressAnim.current = animate(pressScale, 0.972, {
+      duration: 0.05,
+      ease: "easeOut",
+      onComplete: () => {
+        pressAnim.current = animate(pressScale, 1, { type: "spring", stiffness: 380, damping: 13, mass: 0.8 });
+      },
+    });
+  }, [pressScale]);
 
   const sessionRef = useRef<Session | null>(null);
   useEffect(() => {
@@ -417,8 +414,6 @@ export function CardStage({
         onPointerCancel={(e) => finishPress(e, true)}
         onPointerLeave={onPointerLeave}
         style={{
-          x: shakeX,
-          y: shakeY,
           touchAction: "pan-y",
           padding: "22px 18px 30px",
           cursor: "grab",
@@ -436,17 +431,17 @@ export function CardStage({
             bottom: 14,
             height: 26,
             borderRadius: "50%",
-            background: "radial-gradient(closest-side, rgba(0,0,0,0.55), transparent)",
+            background: "radial-gradient(closest-side, rgba(0,0,0,0.6), transparent)",
             filter: "blur(4px)",
           }}
         />
         <VipCard3D
-          rootRef={cardRootRef}
           fullName={fullName}
           memberCode={memberCode}
           stamps={displayed}
           rotateX={rotateX}
           rotateY={rotateY}
+          press={pressScale}
           onRedeemClick={onRedeemClick}
           overlay={
             session?.running ? (
@@ -456,7 +451,7 @@ export function CardStage({
                 earned={session.earned}
                 reduced={reduce}
                 onSlam={handleSlam}
-                onShake={handleShake}
+                onPress={handlePress}
                 onComplete={handleComplete}
               />
             ) : null
@@ -471,11 +466,11 @@ export function CardStage({
           requestFlip(!flippedRef.current);
         }}
         aria-pressed={flipped}
-        className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-xs font-semibold tracking-wide text-cream/75 transition hover:bg-cream/10 active:scale-95"
+        className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-xs font-semibold tracking-wide text-fg-2 transition hover:bg-fg/10 hover:text-fg active:scale-95"
       >
         <RotateCw size={14} aria-hidden />
         {flipped ? "Show front" : "Show stamps"}
-        <span className="text-cream/60" aria-hidden>· or swipe</span>
+        <span className="text-fg-3" aria-hidden>· or swipe</span>
       </button>
     </div>
   );

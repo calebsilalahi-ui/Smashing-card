@@ -185,10 +185,11 @@ export const sfx = {
     });
   },
 
-  sizzle(): void {
+  /** Quiet ember tail. `level` scales loudness (1 = full sizzle). */
+  sizzle(level = 1): void {
     play((c, out, t) => {
       const dur = 0.8;
-      const g = noise(c, out, t + 0.03, { dur, peak: 0.22, type: "bandpass", freq: 6200, q: 0.9 });
+      const g = noise(c, out, t + 0.03, { dur, peak: 0.22 * level, type: "bandpass", freq: 6200, q: 0.9 });
       // crackle: random amplitude pops layered on the envelope
       const lfo = c.createGain();
       lfo.gain.value = 1;
@@ -201,7 +202,23 @@ export const sfx = {
         x += 0.012 + Math.random() * 0.04;
         lfo.gain.setValueAtTime(Math.random() < 0.35 ? 0.1 : 0.5 + Math.random() * 0.9, x);
       }
-      noise(c, out, t + 0.02, { dur: 0.5, peak: 0.08, type: "highpass", freq: 9000, q: 0.5 });
+      noise(c, out, t + 0.02, { dur: 0.5, peak: 0.08 * level, type: "highpass", freq: 9000, q: 0.5 });
+    });
+  },
+
+  /**
+   * Metallic stamp clack: bright noise transient + pitched metal ring + low body.
+   * Pitch climbs a major-pentatonic ladder with the stamp index (0-9, wraps).
+   */
+  clack(index = 0): void {
+    play((c, out, t) => {
+      const steps = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21];
+      const i = ((Math.floor(index) % 10) + 10) % 10;
+      const f = 523.25 * Math.pow(2, steps[i] / 12);
+      noise(c, out, t, { dur: 0.03, peak: 0.55, type: "highpass", freq: 4200, q: 0.7 });
+      tone(c, out, t, { type: "triangle", f0: f * 2, f1: f * 1.96, dur: 0.1, peak: 0.2, attack: 0.001 });
+      tone(c, out, t, { type: "sine", f0: f * 2.76, dur: 0.2, peak: 0.07, attack: 0.001 });
+      tone(c, out, t, { type: "sine", f0: 150 + i * 5, f1: 62, dur: 0.16, peak: 0.55, attack: 0.002 });
     });
   },
 
